@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#yg%n07tp1)8!z#&66xb9flop1)zv0l013#ki!=gdww$b_qx)i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*'] # Added '*' temporarily for deployment setup
 
 
 # Application definition
@@ -144,6 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (Uploaded images)
 MEDIA_URL = '/media/'
