@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Prem Jewellers</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons (via CDN for simplicity) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="catalog.html">Collection</a>
+                <a href="about.html">Our Story</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons text-white">
+                <!-- Placeholder -->
+            </div>
+            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <section class="section">
+        <div class="container text-center">
+            <h1 class="section-title">Get in Touch</h1>
+            <p>We'd love to hear from you. Visit our showroom or send us a message.</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="section" style="padding-top: 0; background-color: #f9f9f9;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+
+                <!-- Contact Info -->
+                <div style="background: white; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
+                        <i data-lucide="user" style="color: #d4af37; margin-right: 20px;"></i>
+                        <div>
+                            <h3>Owner</h3>
+                            <p style="color: #666;">Netik Agrawal</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
+                        <i data-lucide="map-pin" style="color: #d4af37; margin-right: 20px;"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p style="color: #666;">Bada bajar durga mandir ladkui<br>Madhya Pradesh, India</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
+                        <i data-lucide="phone" style="color: #d4af37; margin-right: 20px;"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p style="color: #666;">+91 6262527471</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
+                        <i data-lucide="mail" style="color: #d4af37; margin-right: 20px;"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p style="color: #666;">netik2897@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simple Form -->
+                <div style="background: white; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #666;">Name</label>
+                            <input type="text" id="form-name" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #666;">Email</label>
+                            <input type="email" id="form-email" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #666;">Subject</label>
+                            <input type="text" id="form-subject" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; color: #666;">Message</label>
+                            <textarea id="form-message" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd;"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Prem Jewellers</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                        <strong>Owner: Netik Agrawal</strong><br>
+                        Bada bajar durga mandir ladkui<br>
+                        Madhya Pradesh, India<br><br>
+                        +91 6262527471<br>
+                        netik2897@gmail.com
+                    </p>
+                </div>
+                <div>
+                    <h3>Explore</h3>
+                    <ul>
+                        <li><a href="catalog.html">Full Collection</a></li>
+                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Prem Jewellers. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Contact Form Handling
+        document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                name: document.getElementById('form-name').value,
+                email: document.getElementById('form-email').value,
+                subject: document.getElementById('form-subject').value,
+                message: document.getElementById('form-message').value
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/management-portal/api/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Thank you! Your message has been saved in our database. Netik Agrawal will review it soon.');
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Something went wrong');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message + '. Please check if the backend server is running.');
+            } finally {
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

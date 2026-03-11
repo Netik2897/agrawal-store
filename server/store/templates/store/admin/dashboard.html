@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Prem Jewellers</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #d4af37;
+            --primary-light: #f1c40f;
+            --secondary: #1a1a1a;
+            --dark-bg: #0f0f0f;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --sidebar-w: 280px;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            height: 100vh;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 100;
+        }
+
+        .sidebar .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar .logo i {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-section {
+            margin-bottom: 30px;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            padding-left: 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+            color: var(--primary);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-item i {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 20px;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        /* --- Components --- */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #b8962d);
+            color: var(--secondary);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-info h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-trend {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            color: #00c853;
+        }
+
+        /* --- Glass Card --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            padding: 35px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* --- Table Styling --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr.table-row {
+            background: rgba(255, 255, 255, 0.02);
+            transition: var(--transition);
+        }
+
+        tr.table-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.005);
+        }
+
+        td {
+            padding: 20px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            border-top: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+        }
+
+        td:first-child {
+            border-radius: 12px 0 0 12px;
+            border-left: 1px solid transparent;
+        }
+
+        td:last-child {
+            border-radius: 0 12px 12px 0;
+            border-right: 1px solid transparent;
+        }
+
+        .order-id {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-completed {
+            background: rgba(0, 200, 83, 0.1);
+            color: #00c853;
+            border: 1px solid rgba(0, 200, 83, 0.2);
+        }
+
+        .status-pending {
+            background: rgba(255, 152, 0, 0.1);
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .status-processing {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196f3;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+
+            .sidebar .logo span,
+            .nav-label,
+            .nav-item span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i data-lucide="gem"></i>
+            <span>Netik's Portal</span>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">Main Menu</div>
+            <a href="/management-portal/admin-dashboard/" class="nav-item active">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/admin/store/product/" class="nav-item">
+                <i data-lucide="shopping-bag"></i>
+                <span>Products</span>
+            </a>
+            <a href="/admin/store/order/" class="nav-item">
+                <i data-lucide="shopping-cart"></i>
+                <span>Orders</span>
+            </a>
+            <a href="/admin/store/contactmessage/" class="nav-item">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">Users & Security</div>
+            <a href="/admin/auth/user/" class="nav-item">
+                <i data-lucide="users"></i>
+                <span>Staff Members</span>
+            </a>
+            <a href="/admin/settings/" class="nav-item">
+                <i data-lucide="settings"></i>
+                <span>System Config</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="/" class="nav-item">
+                <i data-lucide="home"></i>
+                <span>View Storefront</span>
+            </a>
+            <a href="/admin/logout/" class="nav-item" style="color: #ff5252;">
+                <i data-lucide="log-out"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div>
+                <h1>Dashboard Overview</h1>
+                <p>Welcome back, Netik Goyal. Here's what's happening today.</p>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn btn-primary" onclick="window.location.href='/admin/store/product/add/'">
+                    <i data-lucide="plus"></i> New Product
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Revenue</h3>
+                    <div class="stat-value">₹{{ total_sales|default:"0" }}</div>
+                    <div class="stat-trend trend-up">
+                        <i data-lucide="trending-up" style="width: 14px;"></i> +12.5% this month
+                    </div>
+                </div>
+                <div class="stat-icon"><i data-lucide="indian-rupee"></i></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Pending Orders</h3>
+                    <div class="stat-value">{{ order_count }}</div>
+                    <div class="stat-trend" style="color: #ff9800;">
+                        <i data-lucide="clock" style="width: 14px;"></i> Needs attention
+                    </div>
+                </div>
+                <div class="stat-icon"><i data-lucide="package-search"></i></div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Inventory</h3>
+                    <div class="stat-value">{{ product_count }}</div>
+                    <div class="stat-trend trend-up">
+                        <i data-lucide="plus-circle" style="width: 14px;"></i> 4 new arrivals
+                    </div>
+                </div>
+                <div class="stat-icon"><i data-lucide="database"></i></div>
+            </div>
+
+            <div class="stat-card" style="cursor: pointer;" onclick="window.location.href='/admin/store/contactmessage/'">
+                <div class="stat-info">
+                    <h3>Messages</h3>
+                    <div class="stat-value">{{ message_count }}</div>
+                    <div class="stat-trend" style="color: var(--primary);">
+                        <i data-lucide="mail" style="width: 14px;"></i> Customer inquiries
+                    </div>
+                </div>
+                <div class="stat-icon"><i data-lucide="message-square"></i></div>
+            </div>
+        </div>
+
+        <!-- Recent Orders Card -->
+        <div class="glass-card">
+            <div class="card-header">
+                <h2>Recent Transactions</h2>
+                <a href="/admin/store/order/" class="btn"
+                    style="color: var(--primary); background: transparent; padding: 0;">
+                    View All Orders <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in latest_orders %}
+                        <tr class="table-row">
+                            <td class="order-id">#ORD-{{ order.id }}</td>
+                            <td style="font-weight: 500;">{{ order.customer_name }}</td>
+                            <td style="color: var(--text-muted);">{{ order.created_at|date:"d M, Y" }}</td>
+                            <td style="font-weight: 600;">₹{{ order.total_amount }}</td>
+                            <td>
+                                <span class="status-badge status-{{ order.status|lower }}">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                <i data-lucide="inbox"
+                                    style="width: 48px; height: 48px; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <p>No orders recorded in the system yet.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Add some micro-interactions
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    </script>
+</body>
+
+</html>

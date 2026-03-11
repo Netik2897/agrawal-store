@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story | Prem Jewellers</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons (via CDN for simplicity) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="catalog.html">Collection</a>
+                <a href="about.html">Our Story</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons text-white">
+                <!-- Placeholder -->
+            </div>
+            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="about-hero" style="position: relative; height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden;">
+        <!-- Premium Visual Background -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1512403754473-27835f79dcc6?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat; z-index: 1;"></div>
+        <!-- Elegant Gradient Overlay -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(15, 15, 13, 0.8), rgba(15, 15, 13, 0.2)), linear-gradient(to bottom, transparent, rgba(15, 15, 13, 0.6)); z-index: 2;"></div>
+        
+        <div class="container" style="position: relative; z-index: 3; animation: fadeIn 1.5s ease;">
+            <span style="text-transform: uppercase; letter-spacing: 0.6em; font-size: 0.9rem; color: var(--gold-light); display: block; margin-bottom: 20px;">A Tradition of Brilliance</span>
+            <h1 style="color: white; font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; font-family: var(--font-serif);">Our Heritage & <br><span style="font-style: italic; color: var(--gold);">Timeless Story</span></h1>
+            <div class="divider" style="background: var(--gold-gradient); width: 120px; margin: 20px auto 40px;"></div>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.25rem; font-weight: 300; max-width: 600px; margin: 0 auto;">Responsible, Reliable, and Trustworthy since 1991</p>
+        </div>
+    </section>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <!-- Content -->
+    <section class="section">
+        <div class="container text-content">
+            <h2 class="section-title">A Legacy of Trust</h2>
+            <div class="divider"></div>
+
+            <p>
+                Established in 2026, <strong>Prem Jewellers</strong> has been a trusted name in fine gold jewellery.
+                Located in the larkui, Nasrullaganj ,sehore, mp, we began as a small family-run business with a singular
+                vision: to bring
+                pure, artistic, and honest gold jewellery to our customers.
+            </p>
+            <br>
+            <p>
+                Over the last three decades, we have grown not just in size but in the hearts of our patrons. Our
+                specialization in <strong>22k Hallmark Gold</strong> ensures that every piece you buy is not just an
+                ornament, but a secure investment for generations to come.
+            </p>
+            <br>
+            <p>
+                We believe that jewellery is more than metal; it is an emotion. Whether it's a bride's wedding set or a
+                small gift for a loved one, our designs are crafted to celebrate life's most precious moments.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" style="background-color: #f9f9f9;">
+        <div class="container">
+            <div class="grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; text-align: center;">
+                <div>
+                    <i data-lucide="shield-check"
+                        style="width: 48px; height: 48px; color: #d4af37; margin-bottom: 20px;"></i>
+                    <h3>100% Hallmarked</h3>
+                    <p style="color: #666; margin-top: 10px;">Every piece is certified for purity.</p>
+                </div>
+                <div>
+                    <i data-lucide="hammer" style="width: 48px; height: 48px; color: #d4af37; margin-bottom: 20px;"></i>
+                    <h3>Handcrafted</h3>
+                    <p style="color: #666; margin-top: 10px;">Unique designs made by master artisans.</p>
+                </div>
+                <div>
+                    <i data-lucide="heart-handshake"
+                        style="width: 48px; height: 48px; color: #d4af37; margin-bottom: 20px;"></i>
+                    <h3>Trusted</h3>
+                    <p style="color: #666; margin-top: 10px;">Serving happiness for over 35 years.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Prem Jewellers</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                        <strong>Owner: Netik Agrawal</strong><br>
+                        Bada bajar durga mandir ladkui<br>
+                        Madhya Pradesh, India<br><br>
+                        +91 6262527471<br>
+                        netik2897@gmail.com
+                    </p>
+                </div>
+                <div>
+                    <h3>Explore</h3>
+                    <ul>
+                        <li><a href="catalog.html">Full Collection</a></li>
+                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Prem Jewellers. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

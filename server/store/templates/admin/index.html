@@ -1,0 +1,121 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div id="content-main">
+    <div
+        style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05)); border: 1px solid rgba(212, 175, 55, 0.3); padding: 35px; border-radius: 20px; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);">
+        <div>
+            <h2
+                style="color: #d4af37; margin: 0; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;">
+                Premium Analytics Dashboard</h2>
+            <p style="margin: 8px 0 0; color: #777; font-size: 1rem; font-family: 'Inter', sans-serif;">Access
+                beauty-focused data insights and advanced management tools.</p>
+        </div>
+        <a href="/management-portal/admin-dashboard/"
+            style="background: linear-gradient(135deg, #d4af37, #b8962d); color: #1a1a1a; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 700; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 10px; font-family: 'Inter', sans-serif;">
+            OPEN DASHBOARD
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-external-link">
+                <path d="M15 3h6v6" />
+                <path d="M10 14 21 3" />
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+        </a>
+    </div>
+
+    <style>
+        .module {
+            background: #fff;
+            border-radius: 16px !important;
+            border: 1px solid #eee !important;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+            margin-bottom: 30px;
+        }
+
+        .module caption {
+            background: #fafafa !important;
+            padding: 15px 20px !important;
+            border-bottom: 1px solid #eee;
+        }
+
+        .module caption a {
+            color: #1a1a1a !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .module table {
+            width: 100%;
+        }
+
+        .module table th,
+        .module table td {
+            padding: 15px 20px !important;
+        }
+
+        .module table tr:hover {
+            background: #fdfdfd;
+        }
+
+        .addlink,
+        .changelink,
+        .viewlink {
+            color: #d4af37 !important;
+            font-weight: 600 !important;
+        }
+
+        .addlink:hover,
+        .changelink:hover,
+        .viewlink:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    {% if app_list %}
+    {% for app in app_list %}
+    <div class="app-{{ app.app_label }} module">
+        <table>
+            <caption>
+                <a href="{{ app.app_url }}" class="section"
+                    title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{
+                    app.name }}</a>
+            </caption>
+            {% for model in app.models %}
+            <tr class="model-{{ model.object_name|lower }}">
+                {% if model.admin_url %}
+                <th scope="row"><a href="{{ model.admin_url }}" style="color: #333; font-weight: 500;">{{ model.name
+                        }}</a></th>
+                {% else %}
+                <th scope="row">{{ model.name }}</th>
+                {% endif %}
+
+                {% if model.add_url %}
+                <td><a href="{{ model.add_url }}" class="addlink">{% translate 'Add' %}</a></td>
+                {% else %}
+                <td>&nbsp;</td>
+                {% endif %}
+
+                {% if model.admin_url %}
+                {% if model.view_only %}
+                <td><a href="{{ model.admin_url }}" class="viewlink">{% translate 'View' %}</a></td>
+                {% else %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% translate 'Change' %}</a></td>
+                {% endif %}
+                {% else %}
+                <td>&nbsp;</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+    {% endif %}
+</div>
+{% endblock %}

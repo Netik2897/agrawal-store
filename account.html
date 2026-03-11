@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | Prem Jewellers</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons (via CDN for simplicity) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-card {
+            background-color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .order-history {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .status-delivered {
+            background-color: #e6fffa;
+            color: #2c7a7b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="catalog.html">Collection</a>
+                <a href="about.html">Our Story</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-icons text-white">
+                <!-- Placeholder -->
+            </div>
+            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Account Content -->
+    <section class="section" style="background-color: #f9f9f9; min-height: 80vh;">
+        <div class="container">
+            <h1 class="section-title text-center">My Account</h1>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+
+                <!-- Profile Mockup -->
+                <div class="profile-card">
+                    <div
+                        style="width: 80px; height: 80px; background-color: #d4af37; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i data-lucide="user" style="width: 40px; height: 40px;"></i>
+                    </div>
+                    <h2>Guest User</h2>
+                    <p style="color: #666;">guest@example.com</p>
+                </div>
+
+                <!-- Order History Mockup -->
+                <div class="order-history">
+                    <h3 style="margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Order
+                        History</h3>
+
+                    <div class="order-item">
+                        <div>
+                            <strong>Order #ORD-2023-1001</strong><br>
+                            <span style="font-size: 0.9rem; color: #888;">Oct 15, 2023</span>
+                        </div>
+                        <div class="text-right">
+                            <span style="font-weight: bold;">₹45,000</span><br>
+                            <span class="status status-delivered">Delivered</span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px dashed #eee;">
+                        <p style="color: #888; font-size: 0.9rem;">No recent orders found.</p>
+                        <a href="catalog.html" class="btn btn-primary" style="margin-top: 10px;">Start Shopping</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Prem Jewellers</h3>
+                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                        <strong>Owner: Netik Agrawal</strong><br>
+                        Bada bajar durga mandir ladkui<br>
+                        Madhya Pradesh, India<br><br>
+                        +91 6262527471<br>
+                        netik2897@gmail.com
+                    </p>
+                </div>
+                <div>
+                    <h3>Explore</h3>
+                    <ul>
+                        <li><a href="catalog.html">Full Collection</a></li>
+                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Prem Jewellers. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
