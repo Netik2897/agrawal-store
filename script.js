@@ -437,9 +437,30 @@ function checkout() {
     if (cart.length === 0) return;
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const names = cart.map(item => item.name).join(', ');
-    toggleCart();
     initiatePayment(names, total);
 }
+
+function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+    
+    // Add overlay to body if menu is active
+    if (navLinks.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// Close menu when clicking links
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks.classList.contains('active')) {
+            toggleMenu();
+        }
+    });
+});
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();

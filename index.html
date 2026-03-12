@@ -57,8 +57,8 @@
     </nav>
 
     <!-- Top Info Bar / Live Gold Rates -->
-    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
-        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+    <div class="gold-rate-bar">
+        <div class="container gold-rate-container">
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
             <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
@@ -73,8 +73,8 @@
         <div class="hero-overlay" style="background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);"></div>
         <div class="hero-content">
             <span style="text-transform: uppercase; letter-spacing: 0.5em; font-size: 0.9rem; margin-bottom: 20px; display: block; color: var(--gold-light);">Since 2026</span>
-            <h1 style="font-size: 5.5rem;"><span class="gold-text">Timeless</span> Elegance</h1>
-            <p style="font-size: 1.5rem; letter-spacing: 0.02em;">Crafting heritage with purity in every masterpiece of 22k & 24k gold.</p>
+            <h1 class="hero-title"><span class="gold-text">Timeless</span> Elegance</h1>
+            <p class="hero-subtitle">Crafting heritage with purity in every masterpiece of 22k & 24k gold.</p>
             <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px;">
                 <a href="catalog.html" class="btn btn-primary">Exhibition Gallery</a>
                 <a href="about.html" class="btn btn-outline" style="color: white; border-color: white;">Our Heritage</a>
@@ -82,23 +82,22 @@
         </div>
     </section>
 
-    <!-- Artistic Excellence Section -->
     <section class="section" style="background-color: var(--white); overflow: hidden;">
         <div class="container">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
-                <div style="position: relative;">
-                    <div style="border: 1px solid var(--gold); padding: 20px; position: relative; z-index: 2;">
-                        <img src="{% static 'craftsmanship.png' %}" alt="Craftsmanship" style="width: 100%; height: 500px; object-fit: cover;">
+            <div class="artistic-grid">
+                <div class="art-image-container">
+                    <div class="art-image-wrapper">
+                        <img src="{% static 'craftsmanship.png' %}" alt="Craftsmanship">
                     </div>
-                    <div style="position: absolute; bottom: -40px; right: -40px; width: 300px; height: 300px; background: var(--gold-extra-light); z-index: 1;"></div>
+                    <div class="art-image-bg"></div>
                 </div>
                 <div>
                     <span style="color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem;">Artisanal Excellence</span>
-                    <h2 style="font-size: 3.5rem; margin-top: 15px;">A Legacy of <span class="gold-text">Purity</span></h2>
+                    <h2 class="section-title-alt">A Legacy of <span class="gold-text">Purity</span></h2>
                     <p style="margin: 30px 0; font-size: 1.1rem; color: var(--text-muted);">
                         At Prem Jewellers, every curve is contemplated, and every stone is selected with supreme care. Our master artisans in Ladkui blend centuries-old techniques with modern design to create jewelry that isn't just worn—it's experienced.
                     </p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px;">
                         <div>
                             <h4 style="margin-bottom: 10px; font-family: var(--font-sans);"><i data-lucide="award" style="width: 18px; color: var(--gold); margin-right: 10px;"></i>100% Hallmark</h4>
                             <p style="font-size: 0.9rem;">BIS certified gold ensuring maximum resale value.</p>
@@ -139,22 +138,22 @@
     <!-- Testimonials Section -->
     <section class="section" style="background: var(--charcoal); color: white;">
         <div class="container">
-            <div class="text-center" style="margin-bottom: 60px;">
-                <h2 style="color: white; font-size: 3rem;">Trusted by <span class="gold-text">Generations</span></h2>
-                <div class="divider" style="background: var(--gold-gradient);"></div>
+            <div class="testimonial-header">
+                <h2 class="section-title-light">Trusted by <span class="gold-text">Generations</span></h2>
+                <div class="divider gold-divider"></div>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-                <div style="padding: 40px; border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255,255,255,0.02);">
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
                     <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
                     <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"The purity of gold and the precision of design at Prem Jewellers is unmatched. I bought my daughter's wedding set here, and it's stunning."</p>
                     <h5 style="color: white; font-family: var(--font-sans);">— S. Sharma, Bhopal</h5>
                 </div>
-                <div style="padding: 40px; border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05);">
+                <div class="testimonial-card featured">
                     <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
                     <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"Netik Agrawal personally ensured my custom design was perfect. Their commitment to transparency is why we only trust them for our gold."</p>
                     <h5 style="color: white; font-family: var(--font-sans);">— R. Agrawal, Ladkui</h5>
                 </div>
-                <div style="padding: 40px; border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255,255,255,0.02);">
+                <div class="testimonial-card">
                     <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
                     <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"The best jewelry shop in Nasrullaganj area. Very honest rates and beautiful collection of 24k coins."</p>
                     <h5 style="color: white; font-family: var(--font-sans);">— M. Khan, Sehore</h5>
