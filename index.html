@@ -19,13 +19,14 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
     
+    {% load static %}
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <a href="index.html" class="logo">Prem <span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
@@ -42,97 +43,156 @@
             </div>
             <div class="nav-icons">
                 <a href="account.html"><i data-lucide="user"></i></a>
-                <a href="#" class="cart-btn relative">
+                <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
-                </a>
+                </button>
             </div>
-            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
+
+    <!-- Top Info Bar / Live Gold Rates -->
+    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-bg"
             style="background-image: url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=2070&auto=format&fit=crop');">
         </div>
-        <div class="hero-overlay"></div>
+        <div class="hero-overlay" style="background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);"></div>
         <div class="hero-content">
-            <h1>Timeless Elegance in 22k & 24k Gold</h1>
-            <p>Crafting memories for generations with purity and trust.</p>
-            <a href="catalog.html" class="btn btn-primary">Explore Collection</a>
+            <span style="text-transform: uppercase; letter-spacing: 0.5em; font-size: 0.9rem; margin-bottom: 20px; display: block; color: var(--gold-light);">Since 2026</span>
+            <h1 style="font-size: 5.5rem;"><span class="gold-text">Timeless</span> Elegance</h1>
+            <p style="font-size: 1.5rem; letter-spacing: 0.02em;">Crafting heritage with purity in every masterpiece of 22k & 24k gold.</p>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px;">
+                <a href="catalog.html" class="btn btn-primary">Exhibition Gallery</a>
+                <a href="about.html" class="btn btn-outline" style="color: white; border-color: white;">Our Heritage</a>
+            </div>
         </div>
     </section>
 
-    <!-- Heritage Section -->
-    <section class="section text-center">
+    <!-- Artistic Excellence Section -->
+    <section class="section" style="background-color: var(--white); overflow: hidden;">
         <div class="container">
-            <h2 class="section-title">Our Heritage</h2>
-            <div class="divider"></div>
-            <p style="max-width: 700px; margin: 0 auto; color: #666;">
-                At Prem Jewellers, we blend traditional artistry with contemporary designs to bring you the finest
-                jewellery.
-                Established in 2026, our commitment to purity and craftsmanship remains unwavering.
-            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+                <div style="position: relative;">
+                    <div style="border: 1px solid var(--gold); padding: 20px; position: relative; z-index: 2;">
+                        <img src="{% static 'craftsmanship.png' %}" alt="Craftsmanship" style="width: 100%; height: 500px; object-fit: cover;">
+                    </div>
+                    <div style="position: absolute; bottom: -40px; right: -40px; width: 300px; height: 300px; background: var(--gold-extra-light); z-index: 1;"></div>
+                </div>
+                <div>
+                    <span style="color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem;">Artisanal Excellence</span>
+                    <h2 style="font-size: 3.5rem; margin-top: 15px;">A Legacy of <span class="gold-text">Purity</span></h2>
+                    <p style="margin: 30px 0; font-size: 1.1rem; color: var(--text-muted);">
+                        At Prem Jewellers, every curve is contemplated, and every stone is selected with supreme care. Our master artisans in Ladkui blend centuries-old techniques with modern design to create jewelry that isn't just worn—it's experienced.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                        <div>
+                            <h4 style="margin-bottom: 10px; font-family: var(--font-sans);"><i data-lucide="award" style="width: 18px; color: var(--gold); margin-right: 10px;"></i>100% Hallmark</h4>
+                            <p style="font-size: 0.9rem;">BIS certified gold ensuring maximum resale value.</p>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 10px; font-family: var(--font-sans);"><i data-lucide="diamond" style="width: 18px; color: var(--gold); margin-right: 10px;"></i>Unique Design</h4>
+                            <p style="font-size: 0.9rem;">Exclusive pieces that you won't find anywhere else.</p>
+                        </div>
+                    </div>
+                    <a href="about.html" class="btn btn-outline">Discover Our Journey</a>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Featured Collection -->
-    <section class="section featured-section" style="background-color: var(--off-white); position: relative; overflow: hidden;">
-        <!-- Subtle Background Decorative Element -->
-        <div style="position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%); border-radius: 50%;"></div>
-        <div style="position: absolute; bottom: -50px; left: -50px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%); border-radius: 50%;"></div>
+    <section class="section featured-section" style="background-color: var(--off-white); position: relative; overflow: hidden; padding: 120px 0;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.05) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(212, 175, 55, 0.05) 0%, transparent 50%); z-index: 0;"></div>
 
         <div class="container">
-            <div class="text-center" style="margin-bottom: 60px;">
-                <span style="text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.8rem; color: var(--gold); font-weight: 600; display: block; margin-bottom: 10px;">Exquisite Artistry</span>
-                <h2 class="section-title">Featured Collection</h2>
+            <div class="text-center" style="margin-bottom: 80px;">
+                <span class="gold-text" style="text-transform: uppercase; letter-spacing: 0.4em; font-size: 0.8rem; font-weight: 700;">Curated Selection</span>
+                <h2 class="section-title" style="margin-top: 20px;">Masterpieces</h2>
                 <div class="divider"></div>
-                <p style="max-width: 600px; margin: -40px auto 40px; color: var(--text-muted); font-style: italic;">"Every piece tells a story of elegance and timeless beauty."</p>
             </div>
 
             <div id="featured-products" class="products-grid">
                 <!-- Products will be injected via JS -->
-                <p class="text-center w-full">Loading featured products...</p>
+                <p class="text-center w-full">Loading featured collection...</p>
             </div>
 
-            <div class="text-center" style="margin-top: 60px;">
-                <a href="catalog.html" class="btn btn-outline" style="border-radius: 0; padding: 18px 40px;">Explore the Full Gallery</a>
+            <div class="text-center" style="margin-top: 80px;">
+                <a href="catalog.html" class="btn btn-primary">Full Exhibition Gallery</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section" style="background: var(--charcoal); color: white;">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2 style="color: white; font-size: 3rem;">Trusted by <span class="gold-text">Generations</span></h2>
+                <div class="divider" style="background: var(--gold-gradient);"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                <div style="padding: 40px; border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255,255,255,0.02);">
+                    <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
+                    <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"The purity of gold and the precision of design at Prem Jewellers is unmatched. I bought my daughter's wedding set here, and it's stunning."</p>
+                    <h5 style="color: white; font-family: var(--font-sans);">— S. Sharma, Bhopal</h5>
+                </div>
+                <div style="padding: 40px; border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05);">
+                    <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
+                    <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"Netik Agrawal personally ensured my custom design was perfect. Their commitment to transparency is why we only trust them for our gold."</p>
+                    <h5 style="color: white; font-family: var(--font-sans);">— R. Agrawal, Ladkui</h5>
+                </div>
+                <div style="padding: 40px; border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255,255,255,0.02);">
+                    <div style="margin-bottom: 20px; color: var(--gold);"><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i><i data-lucide="star" style="fill: var(--gold);"></i></div>
+                    <p style="font-style: italic; opacity: 0.8; margin-bottom: 25px;">"The best jewelry shop in Nasrullaganj area. Very honest rates and beautiful collection of 24k coins."</p>
+                    <h5 style="color: white; font-family: var(--font-sans);">— M. Khan, Sehore</h5>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <h3>Prem Jewellers</h3>
-                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                    <p style="color: #999; font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
                         <strong>Owner: Netik Agrawal</strong><br>
                         Bada bajar durga mandir ladkui<br>
-                        Madhya Pradesh, India<br><br>
-                        +91 6262527471<br>
-                        netik2897@gmail.com
+                        Sehore, Madhya Pradesh, India
                     </p>
+                    <div style="color: var(--gold); font-weight: 500;">
+                        <i data-lucide="phone" style="width: 14px; margin-right: 8px;"></i> +91 6262527471<br>
+                        <i data-lucide="mail" style="width: 14px; margin-right: 8px;"></i> netik2897@gmail.com
+                    </div>
                 </div>
                 <div>
-                    <h3>Explore</h3>
-                    <ul>
-                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
-                        <li><a href="catalog.html?cat=Necklaces">Necklaces</a></li>
-                        <li><a href="catalog.html?cat=Coins">Gold Coins</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                    <h3>Quick Links</h3>
+                    <ul class="footer-link-list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Full Collection</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Social</h3>
-                    <div style="display: flex; gap: 15px;">
-                        <a href="#"><i data-lucide="instagram"></i></a>
-                        <a href="#"><i data-lucide="facebook"></i></a>
-                        <a href="#"><i data-lucide="twitter"></i></a>
+                    <h3>Connect With Us</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Join our inner circle for exclusive previews and gold rate alerts.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                        <a href="https://wa.me/916262527471" class="social-icon" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
                     </div>
                 </div>
             </div>
@@ -142,12 +202,15 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/916262527471" class="whatsapp-float" target="_blank">
-        <i data-lucide="message-circle" style="width: 32px; height: 32px;"></i>
+    <!-- WhatsApp & Back to Top -->
+    <a href="https://wa.me/916262527471" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i data-lucide="message-circle"></i>
     </a>
+    <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="position: fixed; bottom: 30px; left: 30px; display: none;">
+        <i data-lucide="arrow-up"></i>
+    </button>
 
-    <script src="script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
     <script>
         // Start Lucide
         lucide.createIcons();

@@ -20,10 +20,23 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
 
+from store import views as store_views
+
 urlpatterns = [
-    path('', lambda request: redirect('admin/', permanent=False)),
+    path('', store_views.home, name='home'),
+    path('catalog/', store_views.catalog_page, name='catalog'),
+    path('about/', store_views.about_page, name='about'),
+    path('contact/', store_views.contact_page, name='contact'),
+    path('account/', store_views.account_page, name='account'),
     path('admin/', admin.site.urls),
     path('management-portal/', include('store.urls')),
+    
+    # Legacy support for .html links
+    path('index.html', store_views.home),
+    path('catalog.html', store_views.catalog_page),
+    path('about.html', store_views.about_page),
+    path('contact.html', store_views.contact_page),
+    path('account.html', store_views.account_page),
 ]
 
 if settings.DEBUG:

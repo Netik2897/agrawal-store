@@ -1,10 +1,16 @@
 from django.contrib import admin
 from django.urls import reverse
-from .models import Category, Product, Order, ContactMessage
+from .models import Category, Product, Order, ContactMessage, MetalRate
 
 admin.site.site_header = "Prem Jewellers Administration"
 admin.site.site_title = "Prem Admin Portal"
 admin.site.index_title = "Welcome to your Business Management"
+
+@admin.register(MetalRate)
+class MetalRateAdmin(admin.ModelAdmin):
+    list_display = ['get_metal_type_display', 'rate_per_gram', 'last_updated']
+    list_editable = ['rate_per_gram']
+    ordering = ['metal_type']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -14,11 +20,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'price', 'stock', 'available', 'is_featured', 'created', 'updated']
-    list_filter = ['available', 'is_featured', 'created', 'updated', 'category']
-    list_editable = ['price', 'stock', 'available', 'is_featured']
+    list_display = ['name', 'metal_type', 'weight', 'price', 'making_charges', 'stock', 'available', 'is_featured']
+    list_filter = ['available', 'is_featured', 'metal_type', 'category']
+    list_editable = ['price', 'stock', 'available', 'is_featured', 'making_charges']
     prepopulated_fields = {'slug': ('name',)}
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'description', 'metal_type']
     ordering = ['-created']
 
 @admin.register(Order)

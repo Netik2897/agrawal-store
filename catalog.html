@@ -15,13 +15,14 @@
 
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
+    {% load static %}
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
 </head>
 
@@ -30,7 +31,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <a href="index.html" class="logo">Prem <span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
@@ -39,36 +40,45 @@
             </div>
             <div class="nav-icons">
                 <a href="account.html"><i data-lucide="user"></i></a>
-                <a href="#" class="cart-btn relative">
+                <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
-                </a>
+                </button>
             </div>
-            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
+    <!-- Top Info Bar / Live Gold Rates -->
+    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
+        </div>
+    </div>
+
     <!-- Catalog Header -->
     <section class="catalog-hero" style="position: relative; padding: 120px 0; color: white; text-align: center; overflow: hidden;">
         <!-- Premium Background Image -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1573408302185-9103fe58b921?q=80&w=2070&auto=format&fit=crop') center/cover; z-index: -1;"></div>
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1573408302185-9103fe58b921?q=80&w=2070&auto=format&fit=crop');"></div>
         <!-- Sophisticated Gradient Overlay -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(15, 15, 13, 0.4), rgba(15, 15, 13, 0.9)); z-index: -1;"></div>
+        <div class="hero-overlay" style="background: linear-gradient(to bottom, rgba(18, 18, 18, 0.5), rgba(18, 18, 18, 0.95));"></div>
         
         <div class="container" style="position: relative; z-index: 2;">
             <span style="text-transform: uppercase; letter-spacing: 0.5em; font-size: 0.85rem; margin-bottom: 20px; display: block; color: var(--gold-light);">The Gold Standard</span>
-            <h1 id="catalog-title" class="section-title" style="color: white; font-size: 4rem; margin-bottom: 10px;">Our Premium Collection</h1>
+            <h1 id="catalog-title" style="color: white; font-size: 4.5rem; margin-bottom: 10px;">The <span class="gold-text">Exhibition</span> Gallery</h1>
             <div class="divider" style="background: var(--gold-gradient); width: 100px;"></div>
             
-            <p style="max-width: 700px; margin: -30px auto 40px; font-size: 1.1rem; opacity: 0.8; font-weight: 300;">Explore our curated selection of fine jewellery, where every creation is a masterpiece of purity and design.</p>
+            <p style="max-width: 800px; margin: -20px auto 40px; font-size: 1.25rem; opacity: 0.9; font-weight: 300; letter-spacing: 0.05em;">Curated perfection from our master artisans in Ladkui.</p>
 
-            <div class="filters" style="margin-top: 40px; background: rgba(255,255,255,0.05); padding: 20px; backdrop-filter: blur(10px); border-radius: 50px; display: inline-flex; border: 1px solid rgba(255,255,255,0.1);">
-                <a href="catalog.html" class="filter-btn active" style="border: none; color: white;">All Pieces</a>
-                <a href="catalog.html?cat=Rings" class="filter-btn" style="border: none; color: white;">Gold Rings</a>
-                <a href="catalog.html?cat=Necklaces" class="filter-btn" style="border: none; color: white;">Necklaces</a>
-                <a href="catalog.html?cat=Coins" class="filter-btn" style="border: none; color: white;">Gold Coins</a>
+            <div class="filters" style="margin-top: 40px; background: rgba(255,255,255,0.05); padding: 10px; backdrop-filter: var(--glass-blur); border-radius: 60px; display: inline-flex; border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-lg);">
+                <a href="catalog.html" class="filter-btn active" style="margin: 5px;">All Pieces</a>
+                <a href="catalog.html?cat=Rings" class="filter-btn" style="margin: 5px;">Gold Rings</a>
+                <a href="catalog.html?cat=Necklaces" class="filter-btn" style="margin: 5px;">Necklaces</a>
+                <a href="catalog.html?cat=Coins" class="filter-btn" style="margin: 5px;">Gold Coins</a>
             </div>
         </div>
     </section>
@@ -84,44 +94,62 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <h3>Prem Jewellers</h3>
-                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                    <p style="color: #999; font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
                         <strong>Owner: Netik Agrawal</strong><br>
                         Bada bajar durga mandir ladkui<br>
-                        Madhya Pradesh, India<br><br>
-                        +91 6262527471<br>
-                        netik2897@gmail.com
+                        Sehore, Madhya Pradesh, India
                     </p>
+                    <div style="color: var(--gold); font-weight: 500;">
+                        <i data-lucide="phone" style="width: 14px; margin-right: 8px;"></i> +91 6262527471<br>
+                        <i data-lucide="mail" style="width: 14px; margin-right: 8px;"></i> netik2897@gmail.com
+                    </div>
                 </div>
                 <div>
-                    <h3>Explore</h3>
-                    <ul>
+                    <h3>Quick Links</h3>
+                    <ul class="footer-link-list">
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
+                </div>
+                <div>
+                    <h3>Connect With Us</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Join our inner circle for exclusive previews and gold rate alerts.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                        <a href="https://wa.me/916262527471" class="social-icon" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2026 Prem Jewellers. All rights reserved.
+                &copy; 2026 Prem Jewellers. Crafted with Purity and Trust.
             </div>
         </div>
     </footer>
-
     <script>
         // Inline JS for simple interactions
         function toggleMenu() {
             // Implementation handled in script.js but redefining simple toggle logic if needed
         }
     </script>
-    <script src="script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
     <script>
         lucide.createIcons();
     </script>
+    <!-- WhatsApp & Back to Top -->
+    <a href="https://wa.me/916262527471" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
+    <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i data-lucide="arrow-up"></i>
+    </button>
 </body>
 
 </html>

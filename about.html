@@ -15,13 +15,14 @@
 
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
+    {% load static %}
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
 
 </head>
@@ -31,34 +32,47 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <a href="index.html" class="logo">Prem <span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
                 <a href="about.html">Our Story</a>
                 <a href="contact.html">Contact</a>
             </div>
-            <div class="nav-icons text-white">
-                <!-- Placeholder -->
+            <div class="nav-icons">
+                <a href="account.html"><i data-lucide="user"></i></a>
+                <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
+                    <i data-lucide="shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </button>
             </div>
-            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
+    <!-- Top Info Bar / Live Gold Rates -->
+    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
+        </div>
+    </div>
+
     <!-- Header -->
-    <section class="about-hero" style="position: relative; height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden;">
+    <section class="about-hero" style="position: relative; height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden;">
         <!-- Premium Visual Background -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1512403754473-27835f79dcc6?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat; z-index: 1;"></div>
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1512403754473-27835f79dcc6?q=80&w=2070&auto=format&fit=crop');"></div>
         <!-- Elegant Gradient Overlay -->
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(15, 15, 13, 0.8), rgba(15, 15, 13, 0.2)), linear-gradient(to bottom, transparent, rgba(15, 15, 13, 0.6)); z-index: 2;"></div>
+        <div class="hero-overlay" style="background: linear-gradient(to right, rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.2)), linear-gradient(to bottom, transparent, rgba(18, 18, 18, 0.8));"></div>
         
-        <div class="container" style="position: relative; z-index: 3; animation: fadeIn 1.5s ease;">
-            <span style="text-transform: uppercase; letter-spacing: 0.6em; font-size: 0.9rem; color: var(--gold-light); display: block; margin-bottom: 20px;">A Tradition of Brilliance</span>
-            <h1 style="color: white; font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; font-family: var(--font-serif);">Our Heritage & <br><span style="font-style: italic; color: var(--gold);">Timeless Story</span></h1>
+        <div class="container" style="position: relative; z-index: 3;">
+            <span style="text-transform: uppercase; letter-spacing: 0.6em; font-size: 0.9rem; color: var(--gold-light); display: block; margin-bottom: 20px;">A Legacy of Brilliance</span>
+            <h1 style="color: white; font-size: 5rem; line-height: 1.1; margin-bottom: 20px;">Our Heritage & <br><span class="gold-text" style="font-style: italic;">Timeless Story</span></h1>
             <div class="divider" style="background: var(--gold-gradient); width: 120px; margin: 20px auto 40px;"></div>
-            <p style="color: rgba(255,255,255,0.9); font-size: 1.25rem; font-weight: 300; max-width: 600px; margin: 0 auto;">Responsible, Reliable, and Trustworthy since 1991</p>
+            <p style="color: rgba(255,255,255,0.9); font-size: 1.35rem; font-weight: 300; max-width: 700px; margin: 0 auto; letter-spacing: 0.05em;">Responsible, Reliable, and Trusted in Ladkui since 1991.</p>
         </div>
     </section>
 
@@ -122,30 +136,42 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <h3>Prem Jewellers</h3>
-                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                    <p style="color: #999; font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
                         <strong>Owner: Netik Agrawal</strong><br>
                         Bada bajar durga mandir ladkui<br>
-                        Madhya Pradesh, India<br><br>
-                        +91 6262527471<br>
-                        netik2897@gmail.com
+                        Sehore, Madhya Pradesh, India
                     </p>
+                    <div style="color: var(--gold); font-weight: 500;">
+                        <i data-lucide="phone" style="width: 14px; margin-right: 8px;"></i> +91 6262527471<br>
+                        <i data-lucide="mail" style="width: 14px; margin-right: 8px;"></i> netik2897@gmail.com
+                    </div>
                 </div>
                 <div>
-                    <h3>Explore</h3>
-                    <ul>
+                    <h3>Quick Links</h3>
+                    <ul class="footer-link-list">
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
+                </div>
+                <div>
+                    <h3>Connect With Us</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Join our inner circle for exclusive previews and gold rate alerts.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                        <a href="https://wa.me/916262527471" class="social-icon" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2026 Prem Jewellers. All rights reserved.
+                &copy; 2026 Prem Jewellers. Crafted with Purity and Trust.
             </div>
         </div>
     </footer>
@@ -154,6 +180,12 @@
     <script>
         lucide.createIcons();
     </script>
-</body>
+    <!-- WhatsApp & Back to Top -->
+    <a href="https://wa.me/916262527471" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
+    <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i data-lucide="arrow-up"></i>
+    </button>
 
 </html>

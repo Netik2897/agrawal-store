@@ -5,7 +5,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-from .models import Product, Order
+from .models import Product, Order, MetalRate, ContactMessage, Category
+import json
 
 @staff_member_required
 def admin_dashboard(request):
@@ -22,8 +23,24 @@ def admin_dashboard(request):
         'message_count': message_count,
         'total_sales': total_sales,
         'latest_orders': latest_orders,
+        'admin_name': request.user.first_name or request.user.username or "Netik Agrawal"
     }
     return render(request, 'store/admin/dashboard.html', context)
+
+def home(request):
+    return render(request, 'index.html')
+
+def catalog_page(request):
+    return render(request, 'catalog.html')
+
+def about_page(request):
+    return render(request, 'about.html')
+
+def contact_page(request):
+    return render(request, 'contact.html')
+
+def account_page(request):
+    return render(request, 'account.html')
 
 def product_list(request):
     products = Product.objects.all()
@@ -40,6 +57,9 @@ def product_list(request):
             'slug': product.slug,
             'description': product.description,
             'price': str(product.price),
+            'weight': float(product.weight),
+            'metal_type': product.metal_type,
+            'making_charges': str(product.making_charges),
             'stock': product.stock,
             'available': product.available,
             'category__name': product.category.name,
@@ -48,18 +68,13 @@ def product_list(request):
             'image_url': image_url
         })
     
-    # Manually adding CORS headers for simplicity
-    response = JsonResponse(product_data, safe=False)
-    response["Access-Control-Allow-Origin"] = "*"
-    return response
+    return JsonResponse(product_data, safe=False)
 
 def category_list(request):
     from .models import Category
     categories = Category.objects.all()
     category_data = [{'name': c.name, 'slug': c.slug} for c in categories]
-    response = JsonResponse(category_data, safe=False)
-    response["Access-Control-Allow-Origin"] = "*"
-    return response
+    return JsonResponse(category_data, safe=False)
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -75,11 +90,7 @@ def submit_contact_form(request):
                 subject=data.get('subject'),
                 message=data.get('message')
             )
-            response = JsonResponse({'status': 'success', 'message': 'Thank you for your message!'})
-            response["Access-Control-Allow-Origin"] = "*"
-            response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-            response["Access-Control-Allow-Headers"] = "Content-Type"
-            return response
+            return JsonResponse({'status': 'success', 'message': 'Thank you for your message!'})
         except Exception as e:
             response = JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             response["Access-Control-Allow-Origin"] = "*"
@@ -162,5 +173,21 @@ def get_user_profile(request):
     else:
         response = JsonResponse({'status': 'error', 'message': 'Not authenticated'}, status=401)
     
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+def metal_rates(request):
+    rates = MetalRate.objects.all()
+    rate_data = {rate.metal_type: str(rate.rate_per_gram) for rate in rates}
+    
+    # Provide default if no rates set in DB yet
+    if not rate_data:
+        rate_data = {
+            'GOLD_24K': '7350.00',
+            'GOLD_22K': '6850.00',
+            'SILVER': '92.00'
+        }
+        
+    response = JsonResponse(rate_data)
     response["Access-Control-Allow-Origin"] = "*"
     return response

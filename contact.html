@@ -14,13 +14,14 @@
 
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
+    {% load static %}
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 
 <body>
@@ -28,89 +29,111 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem <span>Jewellers</span></a>
+            <a href="index.html" class="logo">Prem <span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
                 <a href="about.html">Our Story</a>
                 <a href="contact.html">Contact</a>
             </div>
-            <div class="nav-icons text-white">
-                <!-- Placeholder -->
+            <div class="nav-icons">
+                <a href="account.html"><i data-lucide="user"></i></a>
+                <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
+                    <i data-lucide="shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </button>
             </div>
-            <button class="mobile-menu-btn text-2xl" onclick="toggleMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <i data-lucide="menu"></i>
             </button>
         </div>
     </nav>
 
-
-    <section class="section">
-        <div class="container text-center">
-            <h1 class="section-title">Get in Touch</h1>
-            <p>We'd love to hear from you. Visit our showroom or send us a message.</p>
+    <!-- Top Info Bar / Live Gold Rates -->
+    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
+            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
         </div>
-    </section>
+    </div>
 
-    <!-- Content -->
-    <section class="section" style="padding-top: 0; background-color: #f9f9f9;">
+
+    <!-- Cinematic Header -->
+    <header class="page-header" style="background-image: url('https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2000&auto=format&fit=crop');">
+        <div class="header-overlay"></div>
+        <div class="container header-content">
+            <span class="gold-text-animated" style="font-size: 0.9rem; letter-spacing: 0.3em; margin-bottom: 20px;">EXQUISITE SERVICE</span>
+            <h1 class="gold-text-animated">Contact <span class="gold-text">Our Concierge</span></h1>
+            <p style="max-width: 600px; margin: 0 auto; opacity: 0.8; font-size: 1.1rem;">Personalized assistance for your next legacy piece. Visit our showroom or reach out to us virtually.</p>
+        </div>
+    </header>    <!-- Contact Content -->
+    <section class="section" style="padding-top: 80px; background-color: var(--white);">
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; align-items: start;">
 
-                <!-- Contact Info -->
-                <div style="background: white; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
-                        <i data-lucide="user" style="color: #d4af37; margin-right: 20px;"></i>
-                        <div>
-                            <h3>Owner</h3>
-                            <p style="color: #666;">Netik Agrawal</p>
+                <!-- Contact Info Cards -->
+                <div style="display: grid; gap: 20px;">
+                    <div class="glass-effect" style="padding: 30px; border: 1px solid rgba(212, 175, 55, 0.1);">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <div style="width: 50px; height: 50px; background: var(--gold-extra-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold-dark);">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Showroom</h3>
+                                <p style="font-weight: 500;">Bada Bajar, Durga Mandir<br>Ladkui, Madhya Pradesh</p>
+                            </div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
-                        <i data-lucide="map-pin" style="color: #d4af37; margin-right: 20px;"></i>
-                        <div>
-                            <h3>Address</h3>
-                            <p style="color: #666;">Bada bajar durga mandir ladkui<br>Madhya Pradesh, India</p>
+
+                    <div class="glass-effect" style="padding: 30px; border: 1px solid rgba(212, 175, 55, 0.1);">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <div style="width: 50px; height: 50px; background: var(--gold-extra-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold-dark);">
+                                <i data-lucide="phone"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Direct Line</h3>
+                                <p style="font-weight: 500;">+91 6262527471</p>
+                            </div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
-                        <i data-lucide="phone" style="color: #d4af37; margin-right: 20px;"></i>
-                        <div>
-                            <h3>Phone</h3>
-                            <p style="color: #666;">+91 6262527471</p>
-                        </div>
-                    </div>
-                    <div style="margin-bottom: 30px; display: flex; align-items: start;">
-                        <i data-lucide="mail" style="color: #d4af37; margin-right: 20px;"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p style="color: #666;">netik2897@gmail.com</p>
+
+                    <div class="glass-effect" style="padding: 30px; border: 1px solid rgba(212, 175, 55, 0.1);">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <div style="width: 50px; height: 50px; background: var(--gold-extra-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold-dark);">
+                                <i data-lucide="mail"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Email</h3>
+                                <p style="font-weight: 500;">netik2897@gmail.com</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Simple Form -->
-                <div style="background: white; padding: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                    <h3>Send a Message</h3>
+                <!-- Contact Form -->
+                <div class="glass-effect" style="padding: 50px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                    <h2 style="font-family: var(--font-serif); margin-bottom: 30px;">Direct Inquiry</h2>
                     <form id="contactForm">
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; color: #666;">Name</label>
-                            <input type="text" id="form-name" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Full Name</label>
+                                <input type="text" id="form-name" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;" required>
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Email Address</label>
+                                <input type="email" id="form-email" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;" required>
+                            </div>
                         </div>
                         <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; color: #666;">Email</label>
-                            <input type="email" id="form-email" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Subject</label>
+                            <input type="text" id="form-subject" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;" required>
                         </div>
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; color: #666;">Subject</label>
-                            <input type="text" id="form-subject" style="width: 100%; padding: 10px; border: 1px solid #ddd;" required>
+                        <div style="margin-bottom: 30px;">
+                            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Your Message</label>
+                            <textarea id="form-message" rows="5" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s; resize: none;" required></textarea>
                         </div>
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 5px; color: #666;">Message</label>
-                            <textarea id="form-message" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd;"
-                                required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-secondary" style="width: 100%;">Send Message</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 0;">Send Request</button>
                     </form>
                 </div>
             </div>
@@ -118,35 +141,47 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <h3>Prem Jewellers</h3>
-                    <p style="color: #aaa; font-size: 0.9rem; line-height: 1.6;">
+                    <p style="color: #999; font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
                         <strong>Owner: Netik Agrawal</strong><br>
                         Bada bajar durga mandir ladkui<br>
-                        Madhya Pradesh, India<br><br>
-                        +91 6262527471<br>
-                        netik2897@gmail.com
+                        Sehore, Madhya Pradesh, India
                     </p>
+                    <div style="color: var(--gold); font-weight: 500;">
+                        <i data-lucide="phone" style="width: 14px; margin-right: 8px;"></i> +91 6262527471<br>
+                        <i data-lucide="mail" style="width: 14px; margin-right: 8px;"></i> netik2897@gmail.com
+                    </div>
                 </div>
                 <div>
-                    <h3>Explore</h3>
-                    <ul>
+                    <h3>Quick Links</h3>
+                    <ul class="footer-link-list">
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="catalog.html?cat=Rings">Gold Rings</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
+                </div>
+                <div>
+                    <h3>Connect With Us</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Join our inner circle for exclusive previews and gold rate alerts.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                        <a href="https://wa.me/916262527471" class="social-icon" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2026 Prem Jewellers. All rights reserved.
+                &copy; 2026 Prem Jewellers. Crafted with Purity and Trust.
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
     <script>
         lucide.createIcons();
 
@@ -178,20 +213,27 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert('Thank you! Your message has been saved in our database. Netik Agrawal will review it soon.');
+                    showToast('Thank you! Your inquiry has been received. Netik Agrawal will respond shortly.');
                     this.reset();
                 } else {
-                    throw new Error(result.message || 'Something went wrong');
+                    throw new Error(result.message || 'Transmission failed');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error: ' + error.message + '. Please check if the backend server is running.');
+                showToast(error.message, 'info');
             } finally {
                 submitBtn.textContent = originalBtnText;
                 submitBtn.disabled = false;
             }
         });
     </script>
+    <!-- WhatsApp & Back to Top -->
+    <a href="https://wa.me/916262527471" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
+    <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i data-lucide="arrow-up"></i>
+    </button>
 </body>
 
 </html>

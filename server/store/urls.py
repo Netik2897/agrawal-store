@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/login/', views.user_login, name='user_login'),
     path('api/logout/', views.user_logout, name='user_logout'),
     path('api/profile/', views.get_user_profile, name='get_user_profile'),
+    path('api/rates/', views.metal_rates, name='metal_rates'),
 ]

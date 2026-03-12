@@ -3,33 +3,53 @@
 const API_BASE_URL = 'http://127.0.0.1:8000/management-portal/api/products/';
 const API_CATEGORIES_URL = 'http://127.0.0.1:8000/management-portal/api/categories/';
 const API_AUTH_URL = 'http://127.0.0.1:8000/management-portal/api/';
+const API_RATES_URL = 'http://127.0.0.1:8000/management-portal/api/rates/';
 
 // Global State
 let products = [];
 let categories_list = [];
 
-// Gold Rates (static for now, can be moved to backend too)
-const goldRates = {
-    '22k': 6850, // Per gram
-    '24k': 7350, // Per gram
+// Market Rates (Updated via API)
+const marketRates = {
+    'GOLD_22K': 6850,
+    'GOLD_24K': 7350,
+    'SILVER': 92,
+};
+const goldRates = { // For backward compatibility if used elsewhere
+    '22k': 6850,
+    '24k': 7350,
 };
 
 // Map Backend Data to Frontend Format
 const mapProductData = (backendProduct) => {
+    const weight = parseFloat(backendProduct.weight) || 0;
+    const metalType = backendProduct.metal_type || 'FIXED';
+    const makingCharges = parseFloat(backendProduct.making_charges) || 0;
+    let manualPrice = parseFloat(backendProduct.price) || 0;
+
+    let finalPrice = manualPrice;
+    
+    // Auto-calculate if price is 0 and metal type is not FIXED
+    if (manualPrice === 0 && metalType !== 'FIXED') {
+        const rate = marketRates[metalType] || 0;
+        finalPrice = (weight * rate) + makingCharges;
+        // Add 3% GST for jewelry
+        finalPrice = finalPrice * 1.03;
+    }
+
     return {
         id: backendProduct.id,
         name: backendProduct.name,
         description: backendProduct.description,
         category: backendProduct.category__name || 'Others',
         category_slug: backendProduct.category_slug || 'others',
-        price: parseFloat(backendProduct.price),
+        price: finalPrice,
+        weight: weight,
+        metal_type: metalType,
+        making_charges: makingCharges,
         stock: backendProduct.stock,
         available: backendProduct.available,
-        // Using sample images if backend doesn't provide them yet
         image_url: backendProduct.image_url || 'https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=1000&auto=format&fit=crop',
-        weight_grams: 10, // Default for now
-        purity: '22k',    // Default for now
-        making_charges: 12, // Default for now
         featured: backendProduct.is_featured
     };
 };
@@ -65,17 +85,52 @@ const FALLBACK_PRODUCTS = [
 // Fetch Products from Backend
 async function fetchProducts() {
     try {
+        await fetchRates(); // Fetch rates first
         const response = await fetch(API_BASE_URL);
         if (!response.ok) throw new Error('API connection failed');
         const data = await response.json();
         products = data.map(mapProductData);
         await fetchCategories();
         renderAll();
+        updateRateBarUI();
     } catch (error) {
         console.warn('API is not available. Using sample data for development.', error);
         products = FALLBACK_PRODUCTS;
         renderAll();
     }
+}
+
+async function fetchRates() {
+    try {
+        const response = await fetch(API_RATES_URL);
+        if (response.ok) {
+            const data = await response.json();
+            marketRates['GOLD_24K'] = parseFloat(data.GOLD_24K);
+            marketRates['GOLD_22K'] = parseFloat(data.GOLD_22K);
+            marketRates['SILVER'] = parseFloat(data.SILVER);
+            
+            // Sync legacy object
+            goldRates['24k'] = marketRates['GOLD_24K'];
+            goldRates['22k'] = marketRates['GOLD_22K'];
+        }
+    } catch (e) {
+        console.warn('Could not fetch rates, using defaults');
+    }
+}
+
+function updateRateBarUI() {
+    const rateBar = document.querySelector('.gold-rate-bar');
+    if (!rateBar) return;
+    
+    const container = rateBar.querySelector('.container');
+    if (!container) return;
+
+    container.innerHTML = `
+        <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹${goldRates['24k'].toLocaleString('en-IN')}/g</span></span>
+        <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹${goldRates['22k'].toLocaleString('en-IN')}/g</span></span>
+        <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> LIVE MARKET RATES</span>
+    `;
+    if (window.lucide) lucide.createIcons();
 }
 
 async function fetchCategories() {
@@ -107,36 +162,65 @@ const formatCurrency = (amount) => {
 
 // Create Product Card HTML
 const createProductCard = (product) => {
-    // If backend provides a fixed price, we use it directly
     const totalPrice = product.price;
 
     return `
       <div class="product-card">
         <div class="product-image">
-          <img src="${product.image_url}" alt="${product.name}">
-          ${product.stock <= 5 ? '<span class="badge badge-red">Few Left</span>' : ''}
+          <img src="${product.image_url}" alt="${product.name}" loading="lazy">
+          ${product.stock <= 5 ? '<span class="badge badge-red">Rare Piece</span>' : ''}
+          <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); opacity: 0; transition: 0.3s;" class="image-overlay"></div>
         </div>
         <div class="product-info">
           <div class="product-category">${product.category}</div>
           <h3 class="product-title">${product.name}</h3>
-          <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px; height: 3em; overflow: hidden;">${product.description}</p>
+          <p class="product-desc">${product.description}</p>
           
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #eee; padding-top: 10px;">
-              <span style="font-size: 0.8rem; color: #888;">Stock: ${product.stock}</span>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--gray-light); padding-top: 15px; margin-top: 10px;">
+              <div style="font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.05em;">
+                ${product.metal_type !== 'FIXED' ? `<span>${product.metal_type.split('_')[1] || product.metal_type}</span><br>` : ''}
+                ${product.weight > 0 ? `<span>Net Wt: ${product.weight}g</span>` : ''}
+              </div>
               <div class="text-right">
-                  <span class="product-price">${formatCurrency(totalPrice)}</span>
-                  <span class="gst-text">(Incl. GST)</span>
+                  <span class="product-price">${formatCurrency(product.price)}</span>
+                  <p class="gst-text">${product.metal_type !== 'FIXED' ? '*Includes Making & GST' : 'Flat Price'}</p>
               </div>
           </div>
   
-          <div class="product-actions">
-              <button class="btn-cart" onclick="addToCart('${product.id}')">Add to Cart</button>
-              <button class="btn-buy" onclick="initiatePayment('${product.name}', ${totalPrice})">Buy Now</button>
+          <div class="product-actions" style="margin-top: 25px; grid-template-columns: 1fr 1.5fr;">
+              <button class="btn-cart" style="border-radius: 0; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}')">
+                <i data-lucide="shopping-bag" style="width: 14px;"></i>
+              </button>
+              <button class="btn-buy" style="border-radius: 0;" onclick="initiatePayment('${product.name.replace(/'/g, "\\'")}', ${totalPrice})">Reserve Now</button>
           </div>
         </div>
       </div>
     `;
 };
+
+// Toast Notification System
+function showToast(message, type = 'success') {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    const icon = type === 'success' ? 'check-circle' : 'info';
+    toast.innerHTML = `<i data-lucide="${icon}" style="width: 18px; color: var(--gold);"></i> <span>${message}</span>`;
+    
+    container.appendChild(toast);
+    if (window.lucide) lucide.createIcons();
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
+}
 
 // Payment Modal Logic
 function initiatePayment(productName, amount) {
@@ -182,28 +266,16 @@ function closePaymentModal() {
 // Mobile Menu Toggle
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
-    const navIcons = document.querySelector('.nav-icons');
-    if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-        navIcons.style.display = 'none';
+    const menuBtn = document.querySelector('.mobile-menu-btn i');
+    
+    navLinks.classList.toggle('active');
+    
+    if (navLinks.classList.contains('active')) {
+        menuBtn.setAttribute('data-lucide', 'x');
     } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '60px';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.backgroundColor = 'white';
-        navLinks.style.padding = '20px';
-        navLinks.style.boxShadow = '0 5px 10px rgba(0,0,0,0.1)';
-        navIcons.style.display = 'flex';
-        navIcons.style.justifyContent = 'center';
-        navIcons.style.marginTop = '20px';
+        menuBtn.setAttribute('data-lucide', 'menu');
     }
-}
-
-function addToCart(productId) {
-    alert('Product added to cart!');
+    if (window.lucide) lucide.createIcons();
 }
 
 // Global Render Function
@@ -255,17 +327,145 @@ function renderAll() {
     }
 }
 
+// Side Cart Logic
+let cart = [];
+
+function toggleCart() {
+    let sideCart = document.getElementById('side-cart');
+    if (!sideCart) {
+        sideCart = document.createElement('div');
+        sideCart.id = 'side-cart';
+        sideCart.className = 'side-cart';
+        sideCart.innerHTML = `
+            <div class="cart-header">
+                <h3>Your Collection</h3>
+                <button class="close-cart" onclick="toggleCart()">&times;</button>
+            </div>
+            <div id="cart-items" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Subtotal</span>
+                    <span id="cart-total-amount">₹0</span>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; border-radius: 0;" onclick="checkout()">Proceed to Reserve</button>
+            </div>
+        `;
+        document.body.appendChild(sideCart);
+        
+        // Add overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'cart-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.onclick = toggleCart;
+        document.body.appendChild(overlay);
+    }
+
+    const isActive = sideCart.classList.toggle('active');
+    document.getElementById('cart-overlay').classList.toggle('modal-active', isActive);
+    if (isActive) renderCart();
+}
+
+function addToCart(productId, productName) {
+    const product = products.find(p => p.id == productId) || FALLBACK_PRODUCTS.find(p => p.id == productId);
+    if (product) {
+        const existing = cart.find(item => item.id == productId);
+        if (existing) {
+            existing.quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        updateCartCount();
+        showToast(`${productName} added to collection`);
+    }
+}
+
+function updateCartCount() {
+    localStorage.setItem('prem_jewellers_cart', JSON.stringify(cart));
+    const countEl = document.getElementById('cart-count');
+    if (countEl) {
+        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+        countEl.textContent = total;
+        countEl.style.transform = 'scale(1.3)';
+        setTimeout(() => countEl.style.transform = 'scale(1)', 200);
+    }
+}
+
+function renderCart() {
+    const container = document.getElementById('cart-items');
+    const totalAmountEl = document.getElementById('cart-total-amount');
+    if (!container) return;
+
+    if (cart.length === 0) {
+        container.innerHTML = '<div style="padding: 40px; text-align: center; color: #888;">Your collection is empty.</div>';
+        totalAmountEl.textContent = '₹0';
+        return;
+    }
+
+    container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <img src="${item.image_url}" alt="${item.name}">
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <p>${formatCurrency(item.price)}</p>
+                <div class="quantity-controls">
+                    <button onclick="updateQty('${item.id}', -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="updateQty('${item.id}', 1)">+</button>
+                </div>
+            </div>
+            <button class="remove-item" onclick="updateQty('${item.id}', -${item.quantity})">&times;</button>
+        </div>
+    `).join('');
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    totalAmountEl.textContent = formatCurrency(total);
+}
+
+function updateQty(id, delta) {
+    const itemIdx = cart.findIndex(item => item.id == id);
+    if (itemIdx > -1) {
+        cart[itemIdx].quantity += delta;
+        if (cart[itemIdx].quantity <= 0) {
+            cart.splice(itemIdx, 1);
+        }
+        updateCartCount();
+        renderCart();
+    }
+}
+
+function checkout() {
+    if (cart.length === 0) return;
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const names = cart.map(item => item.name).join(', ');
+    toggleCart();
+    initiatePayment(names, total);
+}
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
     
-    // Navbar Scroll Effect
+    // Restore Cart
+    const savedCart = localStorage.getItem('prem_jewellers_cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartCount();
+    }
+    
+    // Navbar & Back to Top Scroll Effect
     const navbar = document.querySelector('.navbar');
+    const backToTop = document.getElementById('back-to-top');
+    
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+        }
+
+        if (window.scrollY > 500) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
         }
     });
 });
