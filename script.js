@@ -2,6 +2,7 @@
 // Configuration
 const API_BASE_URL = 'http://127.0.0.1:8000/management-portal/api/products/';
 const API_CATEGORIES_URL = 'http://127.0.0.1:8000/management-portal/api/categories/';
+const API_AUTH_URL = 'http://127.0.0.1:8000/management-portal/api/';
 
 // Global State
 let products = [];
@@ -267,4 +268,116 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
     });
+});
+
+// --- Authentication Logic ---
+
+async function checkAuthStatus() {
+    const loader = document.getElementById('auth-loading');
+    const authForms = document.getElementById('auth-forms');
+    const dashboard = document.getElementById('profile-dashboard');
+    
+    if (!loader) return; // Not on account page
+
+    try {
+        const response = await fetch(API_AUTH_URL + 'profile/');
+        if (response.ok) {
+            const data = await response.json();
+            showDashboard(data.user);
+        } else {
+            showAuthForms();
+        }
+    } catch (error) {
+        showAuthForms();
+    }
+}
+
+function showDashboard(user) {
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('auth-forms').style.display = 'none';
+    document.getElementById('profile-dashboard').style.display = 'block';
+    document.getElementById('user-display-name').textContent = user.name;
+    document.getElementById('user-display-email').textContent = user.email;
+}
+
+function showAuthForms() {
+    document.getElementById('auth-loading').style.display = 'none';
+    document.getElementById('auth-forms').style.display = 'block';
+    document.getElementById('profile-dashboard').style.display = 'none';
+}
+
+function toggleAuthView(view) {
+    if (view === 'register') {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('register-view').style.display = 'block';
+    } else {
+        document.getElementById('login-view').style.display = 'block';
+        document.getElementById('register-view').style.display = 'none';
+    }
+}
+
+async function handleLogout() {
+    try {
+        await fetch(API_AUTH_URL + 'logout/');
+        window.location.reload();
+    } catch (e) {
+        window.location.reload();
+    }
+}
+
+// Event Listeners for Forms
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            try {
+                const response = await fetch(API_AUTH_URL + 'login/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showDashboard(data.user);
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (err) {
+                alert('Connection error');
+            }
+        });
+    }
+
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            
+            try {
+                const response = await fetch(API_AUTH_URL + 'register/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Account created! Sign in now.');
+                    toggleAuthView('login');
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (err) {
+                alert('Connection error');
+            }
+        });
+    }
+
+    checkAuthStatus();
 });

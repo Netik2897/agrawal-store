@@ -82,23 +82,55 @@
         <div class="container">
             <h1 class="section-title text-center">My Account</h1>
 
-            <div style="max-width: 800px; margin: 0 auto;">
+            <!-- Auth Loading State -->
+            <div id="auth-loading" class="text-center" style="padding: 50px;">
+                <p>Checking authentication status...</p>
+            </div>
 
-                <!-- Profile Mockup -->
+            <!-- Auth Forms (Login/Register) -->
+            <div id="auth-forms" style="max-width: 400px; margin: 0 auto; display: none;">
+                <div class="profile-card">
+                    <div id="login-view">
+                        <h2 style="margin-bottom: 20px;">Customer Login</h2>
+                        <form id="login-form">
+                            <input type="email" id="login-email" placeholder="Email Address" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                            <input type="password" id="login-password" placeholder="Password" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                        </form>
+                        <p style="margin-top: 20px; font-size: 0.9rem;">New customer? <a href="#" onclick="toggleAuthView('register')" style="color: var(--gold); font-weight: 600;">Create an account</a></p>
+                    </div>
+
+                    <div id="register-view" style="display: none;">
+                        <h2 style="margin-bottom: 20px;">Create Account</h2>
+                        <form id="register-form">
+                            <input type="text" id="reg-name" placeholder="Full Name" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                            <input type="email" id="reg-email" placeholder="Email Address" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                            <input type="password" id="reg-password" placeholder="Password" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                        </form>
+                        <p style="margin-top: 20px; font-size: 0.9rem;">Already have an account? <a href="#" onclick="toggleAuthView('login')" style="color: var(--gold); font-weight: 600;">Sign in here</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Dashboard (Logged In) -->
+            <div id="profile-dashboard" style="max-width: 800px; margin: 0 auto; display: none;">
+
+                <!-- Profile Card -->
                 <div class="profile-card">
                     <div
                         style="width: 80px; height: 80px; background-color: #d4af37; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: white;">
                         <i data-lucide="user" style="width: 40px; height: 40px;"></i>
                     </div>
-                    <h2>Guest User</h2>
-                    <p style="color: #666;">Sign in to sync your orders</p>
+                    <h2 id="user-display-name">User</h2>
+                    <p id="user-display-email" style="color: #666;"></p>
+                    <button onclick="handleLogout()" class="btn btn-outline" style="margin: 20px auto 0; padding: 10px 20px; border: 1px solid #ddd; font-size: 0.8rem;">Log Out</button>
                 </div>
 
-                <!-- Order History Mockup -->
+                <!-- Order History -->
                 <div class="order-history">
                     <h3 style="margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Order
                         History</h3>
-
 
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px dashed #eee;">
                         <p style="color: #888; font-size: 0.9rem;">No recent orders found.</p>
