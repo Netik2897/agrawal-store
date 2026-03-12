@@ -1,8 +1,13 @@
 @echo off
-echo Starting Prem Jewellers Project...
-cd server
-call .\venv\Scripts\activate.bat
-start http://127.0.0.1:8000/admin
-start ..\index.html
-python manage.py runserver
+echo Starting Prem Gold Live Portal...
+echo.
+echo Opening Admin Panel: http://premgold.pythonanywhere.com/admin/
+echo Opening Website: http://premgold.pythonanywhere.com/
+echo.
+
+start http://premgold.pythonanywhere.com/admin/
+start http://premgold.pythonanywhere.com/
+
+echo Project is Running Live!
 pause
+
