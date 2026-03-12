@@ -151,7 +151,14 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    BASE_DIR.parent,
+    BASE_DIR.parent / "styles.css",
+    BASE_DIR.parent / "script.js",
+    BASE_DIR.parent / "index.html",
+    BASE_DIR.parent / "catalog.html",
+    BASE_DIR.parent / "about.html",
+    BASE_DIR.parent / "contact.html",
+    BASE_DIR.parent / "account.html",
+    BASE_DIR.parent / "robots.txt",
 ]
 
 # Media files (Uploaded images)
