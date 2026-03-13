@@ -192,3 +192,40 @@ def metal_rates(request):
     response = JsonResponse(rate_data)
     response["Access-Control-Allow-Origin"] = "*"
     return response
+
+def sitemap(request):
+    """Dynamic sitemap for SEO"""
+    from django.http import HttpResponse
+    import datetime
+    
+    base_url = "https://premgold.pythonanywhere.com"
+    pages = [
+        {"loc": "/", "priority": "1.0"},
+        {"loc": "/catalog/", "priority": "0.9"},
+        {"loc": "/about/", "priority": "0.8"},
+        {"loc": "/contact/", "priority": "0.8"},
+    ]
+    
+    # Add products to sitemap
+    products = Product.objects.filter(available=True)
+    for product in products:
+        pages.append({
+            "loc": f"/catalog/?cat={product.category.slug}",
+            "priority": "0.6"
+        })
+
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    
+    for page in pages:
+        xml.append('  <url>')
+        xml.append(f'    <loc>{base_url}{page["loc"]}</loc>')
+        xml.append(f'    <lastmod>{today}</lastmod>')
+        xml.append(f'    <priority>{page["priority"]}</priority>')
+        xml.append('  </url>')
+        
+    xml.append('</urlset>')
+    
+    return HttpResponse("\n".join(xml), content_type="application/xml")
