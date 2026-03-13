@@ -209,13 +209,17 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    position: relative;
+    padding: 0 15px;
 }
 
 .logo {
     font-family: var(--font-serif);
-    font-size: 1.75rem;
+    font-size: 1.5rem; /* Slightly smaller for mobile */
     font-weight: 700;
     color: var(--charcoal);
+    z-index: 2001;
 }
 
 .logo span { color: var(--gold-dark); }
@@ -269,16 +273,33 @@ img {
         left: 0;
         width: 100%;
         background: var(--white);
-        padding: 20px;
-        box-shadow: var(--shadow-md);
-        gap: 15px;
+        padding: 40px 20px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        gap: 25px;
+        text-align: center;
+        z-index: 1999;
+        border-top: 1px solid var(--gray-light);
     }
     .nav-links.active {
         display: flex;
+        animation: slideDown 0.4s var(--ease-out);
+    }
+    .nav-links a {
+        font-size: 1.1rem;
+        letter-spacing: 0.1em;
     }
     .mobile-menu-btn {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2001;
     }
+    .logo { font-size: 1.25rem; }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Gold Rate Bar */
