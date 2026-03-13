@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog | Prem Jewellers - Luxury Gold Jewelry</title>
-    <meta name="description" content="Browse our premium 22k and 24k gold jewelry collection. Rings, necklaces, and coins handcrafted with purity and trust.">
-    <meta name="keywords" content="Gold Catalog, Jewelry Collection, Prem Jewellers, Gold Rings, Gold Necklaces, 24k Gold Coins">
+    <title>Collection | Prem Jewellers - Gold & Silver</title>
+    <meta name="description" content="Browse our fine 22k and 24k gold and silver collection. Rings, necklaces, and coins handcrafted with purity and trust in Ladkui.">
+    <meta name="keywords" content="Gold Collection, Silver Jewelry, Prem Jewellers, Gold Rings, 24k Gold Coins, Ladkui Gold">
     
     <meta property="og:title" content="Catalog | Prem Jewellers - Luxury Gold Jewelry">
     <meta property="og:description" content="Browse our premium 22k and 24k gold jewelry collection. Handcrafted pieces of perfection.">
@@ -23,7 +23,12 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-
+    <style>
+        .catalog-hero { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #121212; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 1; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: rgba(0,0,0,0.7); }
+        @media (max-width: 768px) { .catalog-hero { min-height: 50vh; } #catalog-title { font-size: 3.5rem !important; } }
+    </style>
 </head>
 
 <body>
@@ -35,7 +40,7 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Story</a>
+                <a href="about.html">Our Heritage</a>
                 <a href="contact.html">Contact</a>
             </div>
             <div class="nav-icons">
@@ -52,33 +57,33 @@
     </nav>
 
     <!-- Top Info Bar / Live Gold Rates -->
-    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
-        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+    <div class="gold-rate-bar">
+        <div class="container gold-rate-container">
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span><i data-lucide="sparkles" style="width: 12px; vertical-align: middle; margin-right: 8px; color: #e5e4e2;"></i> Silver: <span style="color: #e5e4e2;">₹92/g</span></span>
             <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
         </div>
     </div>
 
-    <!-- Catalog Header -->
-    <section class="catalog-hero" style="position: relative; padding: 120px 0; color: white; text-align: center; overflow: hidden;">
+    <section class="catalog-hero">
         <!-- Premium Background Image -->
-        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1573408302185-9103fe58b921?q=80&w=2070&auto=format&fit=crop');"></div>
+        <div class="hero-bg" style="background-image: url('/media/products/silver_set.png');"></div>
         <!-- Sophisticated Gradient Overlay -->
-        <div class="hero-overlay" style="background: linear-gradient(to bottom, rgba(18, 18, 18, 0.5), rgba(18, 18, 18, 0.95));"></div>
+        <div class="hero-overlay"></div>
         
         <div class="container" style="position: relative; z-index: 2;">
-            <span style="text-transform: uppercase; letter-spacing: 0.5em; font-size: 0.85rem; margin-bottom: 20px; display: block; color: var(--gold-light);">The Gold Standard</span>
-            <h1 id="catalog-title" style="color: white; font-size: 4.5rem; margin-bottom: 10px;">The <span class="gold-text">Exhibition</span> Gallery</h1>
-            <div class="divider" style="background: var(--gold-gradient); width: 100px;"></div>
+            <span style="text-transform: uppercase; letter-spacing: 0.6em; font-size: 0.85rem; margin-bottom: 25px; display: block; color: var(--gold-light); animation: fadeInUp 0.8s var(--ease-out);">The Art of Gold</span>
+            <h1 id="catalog-title" style="color: white; font-size: 5rem; margin-bottom: 5px; animation: fadeInUp 1s var(--ease-out);">The <span class="gold-text">Exhibition</span></h1>
+            <div class="divider" style="background: var(--gold-gradient); width: 80px; margin-top: 20px; animation: fadeInUp 1.2s var(--ease-out);"></div>
             
-            <p style="max-width: 800px; margin: -20px auto 40px; font-size: 1.25rem; opacity: 0.9; font-weight: 300; letter-spacing: 0.05em;">Curated perfection from our master artisans in Ladkui.</p>
+            <p style="max-width: 800px; margin: 0 auto 50px; font-size: 1.35rem; opacity: 0.85; font-weight: 300; letter-spacing: 0.05em; animation: fadeInUp 1.4s var(--ease-out);">Discover unparalleled purity in every gold and silver piece.</p>
 
-            <div class="filters" style="margin-top: 40px; background: rgba(255,255,255,0.05); padding: 10px; backdrop-filter: var(--glass-blur); border-radius: 60px; display: inline-flex; border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-lg);">
-                <a href="catalog.html" class="filter-btn active" style="margin: 5px;">All Pieces</a>
-                <a href="catalog.html?cat=Rings" class="filter-btn" style="margin: 5px;">Gold Rings</a>
-                <a href="catalog.html?cat=Necklaces" class="filter-btn" style="margin: 5px;">Necklaces</a>
-                <a href="catalog.html?cat=Coins" class="filter-btn" style="margin: 5px;">Gold Coins</a>
+            <div class="filters">
+                <a href="catalog.html" class="filter-btn active">All Pieces</a>
+                <a href="catalog.html?cat=rings" class="filter-btn">Gold Rings</a>
+                <a href="catalog.html?cat=necklaces" class="filter-btn">Necklaces</a>
+                <a href="catalog.html?cat=coins" class="filter-btn">Gold Coins</a>
             </div>
         </div>
     </section>
@@ -88,7 +93,10 @@
         <div class="container">
             <div id="catalog-products" class="products-grid">
                 <!-- Products via JS -->
-                <p class="text-center w-full">Loading collection...</p>
+                <div class="text-center w-full" style="grid-column: 1/-1; padding: 100px 0;">
+                    <i data-lucide="loader-2" class="animate-spin" style="width: 48px; height: 48px; color: var(--gold); margin: 0 auto 20px;"></i>
+                    <p style="font-size: 1.2rem; color: var(--text-muted);">Curating our latest collection from the database...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -114,7 +122,7 @@
                     <ul class="footer-link-list">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="about.html">Our Heritage</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                 </div>

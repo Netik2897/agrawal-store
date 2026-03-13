@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Prem Jewellers - Visit Our Showroom</title>
-    <meta name="description" content="Contact Prem Jewellers in Ladkui, Madhya Pradesh. Visit our showroom, call us at +91 6262527471, or send us a message for gold jewelry inquiries.">
-    <meta name="keywords" content="Contact Prem Jewellers, Jewelry Showroom Ladkui, Netik Agrawal Phone, Gold Shop Address Sehore">
+    <title>Contact | Prem Jewellers - Visit Our Shop</title>
+    <meta name="description" content="Contact Prem Jewellers in Ladkui, Madhya Pradesh. Visit our gold shop, call us at +91 6262527471, or send us a message for gold and silver inquiries.">
+    <meta name="keywords" content="Contact Prem Jewellers, Jewelry Shop Ladkui, Netik Agrawal Phone, Gold Shop Address Sehore">
     
-    <meta property="og:title" content="Contact | Prem Jewellers - Visit Our Showroom">
-    <meta property="og:description" content="Get in touch with us for gold jewelry inquiries. Visit our showroom or send a message.">
+    <meta property="og:title" content="Contact | Prem Jewellers - Visit Our Shop">
+    <meta property="og:description" content="Get in touch with us for gold and silver inquiries. Visit our shop or send a message.">
     <meta property="og:url" content="http://premgold.pythonanywhere.com/contact.html">
 
     <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
@@ -33,7 +33,7 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Story</a>
+                <a href="about.html">Our Heritage</a>
                 <a href="contact.html">Contact</a>
             </div>
             <div class="nav-icons">
@@ -50,10 +50,11 @@
     </nav>
 
     <!-- Top Info Bar / Live Gold Rates -->
-    <div class="gold-rate-bar" style="background: var(--charcoal); color: var(--gold-extra-light); padding: 12px 0; font-size: 0.75rem; letter-spacing: 0.15em; position: relative; z-index: 999; margin-top: 90px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
-        <div class="container" style="display: flex; justify-content: center; gap: 50px; text-transform: uppercase; font-weight: 500;">
+    <div class="gold-rate-bar">
+        <div class="container gold-rate-container">
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
             <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
+            <span><i data-lucide="sparkles" style="width: 12px; vertical-align: middle; margin-right: 8px; color: #e5e4e2;"></i> Silver: <span style="color: #e5e4e2;">₹92/g</span></span>
             <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
         </div>
     </div>
@@ -65,7 +66,7 @@
         <div class="container header-content">
             <span class="gold-text-animated" style="font-size: 0.9rem; letter-spacing: 0.3em; margin-bottom: 20px;">EXQUISITE SERVICE</span>
             <h1 class="gold-text-animated">Contact <span class="gold-text">Our Concierge</span></h1>
-            <p style="max-width: 600px; margin: 0 auto; opacity: 0.8; font-size: 1.1rem;">Personalized assistance for your next legacy piece. Visit our showroom or reach out to us virtually.</p>
+            <p style="max-width: 600px; margin: 0 auto; opacity: 0.8; font-size: 1.1rem;">Personalized assistance for your gold and silver pieces. Visit our shop or reach out to us virtually.</p>
         </div>
     </header>    <!-- Contact Content -->
     <section class="section" style="padding-top: 80px; background-color: var(--white);">
@@ -80,7 +81,7 @@
                                 <i data-lucide="map-pin"></i>
                             </div>
                             <div>
-                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Showroom</h3>
+                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Our Shop</h3>
                                 <p style="font-weight: 500;">Bada Bajar, Durga Mandir<br>Ladkui, Madhya Pradesh</p>
                             </div>
                         </div>
@@ -109,6 +110,18 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="glass-effect" style="padding: 30px; border: 1px solid rgba(212, 175, 55, 0.1);">
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <div style="width: 50px; height: 50px; background: var(--gold-extra-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold-dark);">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px;">Store Hours</h3>
+                                <p style="font-weight: 500;">Mon - Sat: 10:00 AM - 8:30 PM<br>Sun: 11:00 AM - 4:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Contact Form -->
@@ -126,8 +139,12 @@
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
+                            <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Contact Number</label>
+                            <input type="tel" id="form-phone" placeholder="+91 XXXX-XXXXXX" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
                             <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Subject</label>
-                            <input type="text" id="form-subject" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;" required>
+                            <input type="text" id="form-subject" placeholder="e.g., Wedding Jewellery Inquiry" style="width: 100%; padding: 12px; border: 1px solid #eee; background: #fafafa; outline: none; transition: 0.3s;" required>
                         </div>
                         <div style="margin-bottom: 30px;">
                             <label style="display: block; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7;">Your Message</label>
@@ -161,7 +178,7 @@
                     <ul class="footer-link-list">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="about.html">Our Heritage</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                 </div>
@@ -197,12 +214,13 @@
             const formData = {
                 name: document.getElementById('form-name').value,
                 email: document.getElementById('form-email').value,
+                phone: document.getElementById('form-phone').value,
                 subject: document.getElementById('form-subject').value,
                 message: document.getElementById('form-message').value
             };
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/management-portal/api/contact/', {
+                const response = await fetch('/management-portal/api/contact/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

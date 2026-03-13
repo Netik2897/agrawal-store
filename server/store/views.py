@@ -87,6 +87,7 @@ def submit_contact_form(request):
             ContactMessage.objects.create(
                 name=data.get('name'),
                 email=data.get('email'),
+                phone=data.get('phone'),
                 subject=data.get('subject'),
                 message=data.get('message')
             )

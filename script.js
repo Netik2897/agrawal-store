@@ -1,9 +1,9 @@
 
 // Configuration
-const API_BASE_URL = 'http://127.0.0.1:8000/management-portal/api/products/';
-const API_CATEGORIES_URL = 'http://127.0.0.1:8000/management-portal/api/categories/';
-const API_AUTH_URL = 'http://127.0.0.1:8000/management-portal/api/';
-const API_RATES_URL = 'http://127.0.0.1:8000/management-portal/api/rates/';
+const API_BASE_URL = '/management-portal/api/products/';
+const API_CATEGORIES_URL = '/management-portal/api/categories/';
+const API_AUTH_URL = '/management-portal/api/';
+const API_RATES_URL = '/management-portal/api/rates/';
 
 // Global State
 let products = [];
@@ -87,16 +87,33 @@ async function fetchProducts() {
     try {
         await fetchRates(); // Fetch rates first
         const response = await fetch(API_BASE_URL);
-        if (!response.ok) throw new Error('API connection failed');
+        if (!response.ok) throw new Error(`API failed with status ${response.status}`);
         const data = await response.json();
         products = data.map(mapProductData);
         await fetchCategories();
         renderAll();
         updateRateBarUI();
     } catch (error) {
-        console.warn('API is not available. Using sample data for development.', error);
+        console.error('Database connection error:', error);
+        const catalogContainer = document.getElementById('catalog-products');
+        const featuredContainer = document.getElementById('featured-products');
+        
+        const errorMsg = `
+            <div class="text-center" style="grid-column: 1/-1; padding: 40px; color: #d32f2f; background: rgba(211, 47, 47, 0.05); border: 1px solid rgba(211, 47, 47, 0.2); border-radius: 8px;">
+                <i data-lucide="alert-triangle" style="width: 32px; height: 32px; margin-bottom: 10px;"></i>
+                <h4 style="margin-bottom: 5px;">Collection Unavailable</h4>
+                <p style="font-size: 0.9rem;">We're currently having trouble connecting to our specialized database. Please try refreshing the page or check back later.</p>
+                <div style="margin-top: 15px; font-size: 0.75rem; opacity: 0.7; font-family: monospace;">Error: ${error.message}</div>
+            </div>
+        `;
+        
+        if (catalogContainer) catalogContainer.innerHTML = errorMsg;
+        if (featuredContainer) featuredContainer.innerHTML = errorMsg;
+        
+        // Fallback to static sample data for visual proof if database is truly down
         products = FALLBACK_PRODUCTS;
-        renderAll();
+        // renderAll(); // We don't call renderAll here because it would overwrite the error message
+        if (window.lucide) lucide.createIcons();
     }
 }
 
@@ -105,9 +122,9 @@ async function fetchRates() {
         const response = await fetch(API_RATES_URL);
         if (response.ok) {
             const data = await response.json();
-            marketRates['GOLD_24K'] = parseFloat(data.GOLD_24K);
-            marketRates['GOLD_22K'] = parseFloat(data.GOLD_22K);
-            marketRates['SILVER'] = parseFloat(data.SILVER);
+            if (data.GOLD_24K) marketRates['GOLD_24K'] = parseFloat(data.GOLD_24K);
+            if (data.GOLD_22K) marketRates['GOLD_22K'] = parseFloat(data.GOLD_22K);
+            if (data.SILVER) marketRates['SILVER'] = parseFloat(data.SILVER);
             
             // Sync legacy object
             goldRates['24k'] = marketRates['GOLD_24K'];
@@ -125,10 +142,13 @@ function updateRateBarUI() {
     const container = rateBar.querySelector('.container');
     if (!container) return;
 
+    const silverVal = marketRates['SILVER'] ? `₹${marketRates['SILVER'].toLocaleString('en-IN')}/g` : '₹92/g';
+
     container.innerHTML = `
         <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹${goldRates['24k'].toLocaleString('en-IN')}/g</span></span>
         <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹${goldRates['22k'].toLocaleString('en-IN')}/g</span></span>
-        <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> LIVE MARKET RATES</span>
+        <span><i data-lucide="sparkles" style="width: 12px; vertical-align: middle; margin-right: 8px; color: #e5e4e2;"></i> Silver: <span style="color: #e5e4e2;">${silverVal}</span></span>
+        <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
     `;
     if (window.lucide) lucide.createIcons();
 }
@@ -161,37 +181,39 @@ const formatCurrency = (amount) => {
 };
 
 // Create Product Card HTML
-const createProductCard = (product) => {
+// Create Product Card HTML
+const createProductCard = (product, index = 0) => {
     const totalPrice = product.price;
 
     return `
-      <div class="product-card">
+      <div class="product-card" style="animation-delay: ${index * 0.1}s">
         <div class="product-image">
           <img src="${product.image_url}" alt="${product.name}" loading="lazy">
-          ${product.stock <= 5 ? '<span class="badge badge-red">Rare Piece</span>' : ''}
+          ${product.stock <= 5 && product.stock > 0 ? '<span class="badge" style="background: var(--gold); color: white; position: absolute; top: 15px; right: 15px; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px;">Limited Edition</span>' : ''}
+          ${product.stock === 0 ? '<span class="badge" style="background: var(--text-muted); color: white; position: absolute; top: 15px; right: 15px; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px;">Out of Stock</span>' : ''}
           <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); opacity: 0; transition: 0.3s;" class="image-overlay"></div>
         </div>
-        <div class="product-info">
-          <div class="product-category">${product.category}</div>
-          <h3 class="product-title">${product.name}</h3>
-          <p class="product-desc">${product.description}</p>
+        <div class="product-info" style="flex: 1; display: flex; flex-direction: column;">
+          <div class="product-category" style="color: var(--gold-dark); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">${product.category}</div>
+          <h3 class="product-title" style="font-size: 1.25rem; margin-bottom: 10px; font-family: var(--font-serif);">${product.name}</h3>
+          <p class="product-desc" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex: 1;">${product.description}</p>
           
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--gray-light); padding-top: 15px; margin-top: 10px;">
-              <div style="font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.05em;">
-                ${product.metal_type !== 'FIXED' ? `<span>${product.metal_type.split('_')[1] || product.metal_type}</span><br>` : ''}
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--gray-light); padding-top: 15px; margin-top: auto;">
+              <div style="font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.4;">
+                ${product.metal_type !== 'FIXED' ? `<span>${product.metal_type.replace('_', ' ')}</span><br>` : ''}
                 ${product.weight > 0 ? `<span>Net Wt: ${product.weight}g</span>` : ''}
               </div>
               <div class="text-right">
-                  <span class="product-price">${formatCurrency(product.price)}</span>
-                  <p class="gst-text">${product.metal_type !== 'FIXED' ? '*Includes Making & GST' : 'Flat Price'}</p>
+                  <span class="product-price" style="font-size: 1.2rem; font-weight: 700; color: var(--charcoal);">${formatCurrency(product.price)}</span>
+                  <p class="gst-text" style="font-size: 0.65rem; color: #aaa; margin-top: 2px;">${product.metal_type !== 'FIXED' ? '*Inc. GST & Charges' : 'Flat Price'}</p>
               </div>
           </div>
   
-          <div class="product-actions" style="margin-top: 25px; grid-template-columns: 1fr 1.5fr;">
-              <button class="btn-cart" style="border-radius: 0; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}')">
-                <i data-lucide="shopping-bag" style="width: 14px;"></i>
+          <div class="product-actions" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
+              <button class="btn-cart" style="background: var(--gray-light); border: none; padding: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;" onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}')" title="Add to Collection">
+                <i data-lucide="shopping-bag" style="width: 18px; color: var(--charcoal);"></i>
               </button>
-              <button class="btn-buy" style="border-radius: 0;" onclick="initiatePayment('${product.name.replace(/'/g, "\\'")}', ${totalPrice})">Reserve Now</button>
+              <button class="btn-buy" style="background: var(--charcoal); color: white; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; cursor: pointer; transition: 0.3s;" onclick="initiatePayment('${product.name.replace(/'/g, "\\'")}', ${totalPrice})">Reserve Piece</button>
           </div>
         </div>
       </div>
@@ -278,23 +300,34 @@ function toggleMenu() {
     if (window.lucide) lucide.createIcons();
 }
 
-// Global Render Function
 function renderAll() {
+    // Featured Section
     const featuredContainer = document.getElementById('featured-products');
+    const silverContainer = document.getElementById('silver-products');
+
     if (featuredContainer) {
-        const featuredProducts = products.filter(p => p.featured);
-        featuredContainer.innerHTML = featuredProducts.length > 0
-            ? featuredProducts.map(createProductCard).join('')
-            : '<p class="text-center w-full">No featured products yet.</p>';
-        if (window.lucide) lucide.createIcons();
+        const goldFeatured = products.filter(p => p.featured && p.metal_type.includes('GOLD'));
+        featuredContainer.innerHTML = goldFeatured.length > 0
+            ? goldFeatured.map((p, i) => createProductCard(p, i)).join('')
+            : '<p class="text-center w-full">Coming soon: Our new gold masterpieces.</p>';
     }
 
+    if (silverContainer) {
+        const silverProducts = products.filter(p => p.metal_type === 'SILVER' || p.category_slug === 'silver');
+        silverContainer.innerHTML = silverProducts.length > 0
+            ? silverProducts.map((p, i) => createProductCard(p, i)).join('')
+            : '<p class="text-center w-full">Coming soon: Our handcrafted silver collection.</p>';
+    }
+    
+    if (window.lucide) lucide.createIcons();
+
+    // Catalog Section
     const catalogContainer = document.getElementById('catalog-products');
     if (catalogContainer) {
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('cat');
 
-        // Render Category Filters dynamically if the element exists
+        // Render Category Filters dynamically
         const filterContainer = document.querySelector('.filters');
         if (filterContainer && categories_list.length > 0) {
             let filterHtml = `<a href="catalog.html" class="filter-btn ${!category ? 'active' : ''}">All Pieces</a>`;
@@ -313,15 +346,15 @@ function renderAll() {
             );
             const titleEl = document.getElementById('catalog-title');
             if (titleEl) {
-                // Find category name from list or use the param
                 const catObj = categories_list.find(c => c.slug === category || c.name === category);
                 titleEl.textContent = `${catObj ? catObj.name : category} Collection`;
             }
         }
+
         if (displayProducts.length > 0) {
-            catalogContainer.innerHTML = displayProducts.map(createProductCard).join('');
+            catalogContainer.innerHTML = displayProducts.map((p, i) => createProductCard(p, i)).join('');
         } else {
-            catalogContainer.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">No products found in this category.</p>';
+            catalogContainer.innerHTML = '<p class="text-center" style="grid-column: 1/-1; padding: 40px; color: #888;">No pieces found in this category.</p>';
         }
         if (window.lucide) lucide.createIcons();
     }
