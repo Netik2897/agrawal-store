@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'corsheaders',
 ]
 
@@ -154,6 +156,18 @@ STATICFILES_DIRS = [
     BASE_DIR.parent, # This correctly points to the root directory where styles.css and script.js are located
 ]
 
-# Media files (Uploaded images)
+# Cloudinary Configuration
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dou9khzmk',
+    'API_KEY': '47452186799398',
+    'API_SECRET': 'wPz06xfgFjTLgeFs4K25SJEqAcY',
+}
+
+# Media files (Uploaded images) using Cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
