@@ -168,19 +168,20 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 18px 36px;
+    padding: 14px 28px;
     font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     cursor: pointer;
     transition: var(--transition);
     position: relative;
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     overflow: hidden;
     z-index: 1;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
@@ -826,15 +827,16 @@ img {
         text-align: center;
     }
 
-    .hero h1 {
-        font-size: 3rem;
-        line-height: 1.1;
+    .hero h1, .hero-title {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
         margin-bottom: 15px;
     }
 
-    .hero p {
-        font-size: 1.15rem;
-        padding: 0 15px;
+    .hero p, .hero-subtitle {
+        font-size: 1rem !important;
+        padding: 0 10px;
+        line-height: 1.5;
     }
 
     .gold-rate-bar .container span {
