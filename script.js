@@ -89,7 +89,12 @@ async function fetchProducts() {
         const response = await fetch(API_BASE_URL);
         if (!response.ok) throw new Error(`API failed with status ${response.status}`);
         const data = await response.json();
-        products = data.map(mapProductData);
+        if (data.length === 0) {
+            console.info("Database returned empty products list. Using fallback data for visual experience.");
+            products = FALLBACK_PRODUCTS;
+        } else {
+            products = data.map(mapProductData);
+        }
         await fetchCategories();
         renderAll();
         updateRateBarUI();
