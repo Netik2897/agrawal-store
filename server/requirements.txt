@@ -10,3 +10,4 @@ six
 urllib3
 pymysql
 Pillow
+python-dotenv

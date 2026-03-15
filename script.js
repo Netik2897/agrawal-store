@@ -191,39 +191,40 @@ const createProductCard = (product, index = 0) => {
     const totalPrice = product.price;
 
     return `
-      <div class="product-card" style="animation-delay: ${index * 0.1}s">
+      <div class="product-card reveal-on-scroll" style="animation-delay: ${index * 0.1}s">
         <div class="product-image">
           <img src="${product.image_url}" alt="${product.name}" loading="lazy">
-          ${product.stock <= 5 && product.stock > 0 ? '<span class="badge" style="background: var(--gold); color: white; position: absolute; top: 15px; right: 15px; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px;">Limited Edition</span>' : ''}
-          ${product.stock === 0 ? '<span class="badge" style="background: var(--text-muted); color: white; position: absolute; top: 15px; right: 15px; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 20px;">Out of Stock</span>' : ''}
-          <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); opacity: 0; transition: 0.3s;" class="image-overlay"></div>
+          ${product.stock <= 5 && product.stock > 0 ? '<span class="metal-badge">Limited Edition</span>' : ''}
+          ${product.stock === 0 ? '<span class="metal-badge" style="background: var(--text-muted);">Out of Stock</span>' : ''}
+          <div class="image-overlay"></div>
         </div>
-        <div class="product-info" style="flex: 1; display: flex; flex-direction: column;">
-          <div class="product-category" style="color: var(--gold-dark); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">${product.category}</div>
-          <h3 class="product-title" style="font-size: 1.25rem; margin-bottom: 10px; font-family: var(--font-serif);">${product.name}</h3>
-          <p class="product-desc" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex: 1;">${product.description}</p>
+        <div class="product-info">
+          <div class="product-category">${product.category}</div>
+          <h3 class="product-title">${product.name}</h3>
+          <p class="product-desc">${product.description}</p>
           
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--gray-light); padding-top: 15px; margin-top: auto;">
+          <div class="product-meta">
               <div style="font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.4;">
                 ${product.metal_type !== 'FIXED' ? `<span>${product.metal_type.replace('_', ' ')}</span><br>` : ''}
                 ${product.weight > 0 ? `<span>Net Wt: ${product.weight}g</span>` : ''}
               </div>
               <div class="text-right">
-                  <span class="product-price" style="font-size: 1.2rem; font-weight: 700; color: var(--charcoal);">${formatCurrency(product.price)}</span>
+                  <span class="product-price">${formatCurrency(product.price)}</span>
                   <p class="gst-text" style="font-size: 0.65rem; color: #aaa; margin-top: 2px;">${product.metal_type !== 'FIXED' ? '*Inc. GST & Charges' : 'Flat Price'}</p>
               </div>
           </div>
   
           <div class="product-actions" style="margin-top: 20px; display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
-              <button class="btn-cart" style="background: var(--gray-light); border: none; padding: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;" onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}')" title="Add to Collection">
+              <button class="btn-cart" onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}')" title="Add to Collection">
                 <i data-lucide="shopping-bag" style="width: 18px; color: var(--charcoal);"></i>
               </button>
-              <button class="btn-buy" style="background: var(--charcoal); color: white; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.75rem; cursor: pointer; transition: 0.3s;" onclick="initiatePayment('${product.name.replace(/'/g, "\\'")}', ${totalPrice})">Reserve Piece</button>
+              <button class="btn-buy premium-glow" onclick="initiatePayment('${product.name.replace(/'/g, "\\'")}', ${totalPrice})">Reserve Piece</button>
           </div>
         </div>
       </div>
     `;
 };
+ village_id = 0; // Placeholder for any village ID logic if needed
 
 // Toast Notification System
 function showToast(message, type = 'success') {
@@ -526,6 +527,41 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             backToTop.classList.remove('visible');
         }
+    });
+
+    // Reveal on Scroll Initialization
+    const revealCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const revealObserver = new IntersectionObserver(revealCallback, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // We observe both existing and dynamically added elements
+    const observeElements = () => {
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            revealObserver.observe(el);
+        });
+    };
+
+    observeElements();
+    
+    // Create a MutationObserver to watch for newly added products
+    const dynamicObserver = new MutationObserver(() => {
+        observeElements();
+    });
+    
+    const containers = ['featured-products', 'silver-products', 'catalog-products'];
+    containers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) dynamicObserver.observe(el, { childList: true });
     });
 });
 

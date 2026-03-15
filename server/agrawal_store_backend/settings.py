@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#yg%n07tp1)8!z#&66xb9flop1)zv0l013#ki!=gdww$b_qx)i'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'premgold.pythonanywhere.com', '.pythonanywhere.com']
 
@@ -76,43 +81,38 @@ TEMPLATES = [
 WSGI_APPLICATION = 'agrawal_store_backend.wsgi.application'
 
 
-# Database selection logic
-import os
-
+# Database Configuration
 try:
     import pymysql
     pymysql.install_as_MySQLdb()
 except ImportError:
     pass
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Determine which database to use
+USE_SQLITE = os.environ.get('USE_SQLITE', 'False') == 'True'
+
+if USE_SQLITE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
-# Override with MySQL if explicitly configured and available
-MYSQL_NAME = os.environ.get('MYSQL_NAME', 'agrawal_store')
-MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
-MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '')
-MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost')
-MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
-
-# You can manually uncomment this to use MySQL if it is setup
-# try:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': MYSQL_NAME,
-#             'USER': MYSQL_USER,
-#             'PASSWORD': MYSQL_PASSWORD,
-#             'HOST': MYSQL_HOST,
-#             'PORT': MYSQL_PORT,
-#         }
-#     }
-# except Exception:
-#     print("MySQL not available. Falling back to SQLite.")
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('DB_NAME', 'agrawal_store'),
+            'USER': os.environ.get('DB_USER', 'root'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            }
+        }
+    }
 
 
 # Password validation
@@ -162,12 +162,28 @@ import cloudinary.uploader
 import cloudinary.api
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dou9khzmk',
-    'API_KEY': '47452186799398',
-    'API_SECRET': 'wPz06xfgFjTLgeFs4K25SJEqAcY',
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
 # Media files (Uploaded images) using Cloudinary
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Determine which storage to use
+USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
+
+# Media and Static files configuration (Django 4.2+)
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage" if USE_CLOUDINARY else "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+# Legacy settings for compatibility with some third-party apps
+# Note: In Django 5.0+, these are removed and replaced by the STORAGES setting above.
+# We keep them commented out or removed to avoid AttributeError.
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

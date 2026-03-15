@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-from .models import Product, Order, MetalRate, ContactMessage, Category
+from .models import Product, Order, OrderItem, MetalRate, ContactMessage, Category, CustomerProfile, Cart, CartItem
 import json
 
 @staff_member_required
@@ -43,13 +43,16 @@ def account_page(request):
     return render(request, 'account.html')
 
 def product_list(request):
-    products = Product.objects.all()
+    # Use select_related to optimize DB queries (prevents N+1 problem)
+    products = Product.objects.select_related('category').all()
     product_data = []
     
     for product in products:
         image_url = ""
         if product.image:
-            image_url = request.build_absolute_uri(product.image.url)
+            image_url = product.image.url
+            if not image_url.startswith('http'):
+                image_url = request.build_absolute_uri(image_url)
             
         product_data.append({
             'id': product.id,
@@ -164,11 +167,17 @@ def user_logout(request):
 
 def get_user_profile(request):
     if request.user.is_authenticated:
+        profile = request.user.profile
         response = JsonResponse({
             'status': 'success',
             'user': {
                 'name': request.user.first_name or request.user.username,
-                'email': request.user.email
+                'email': request.user.email,
+                'phone': profile.phone_number,
+                'address': profile.address,
+                'city': profile.city,
+                'state': profile.state,
+                'pincode': profile.pincode
             }
         })
     else:
@@ -176,6 +185,47 @@ def get_user_profile(request):
     
     response["Access-Control-Allow-Origin"] = "*"
     return response
+
+@csrf_exempt
+def cart_handle(request):
+    """API for managing cart items"""
+    # Simple implementation: fetch or create cart
+    cart = None
+    if request.user.is_authenticated:
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+    else:
+        # Session based cart logic could go here
+        return JsonResponse({'status': 'error', 'message': 'Authentication required for cart'}, status=401)
+
+    if request.method == 'GET':
+        items = cart.items.all()
+        data = [{
+            'id': item.id,
+            'product_id': item.product.id,
+            'product_name': item.product.name,
+            'quantity': item.quantity,
+            'price': str(item.product.price)
+        } for item in items]
+        return JsonResponse({'status': 'success', 'cart_items': data})
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            quantity = int(data.get('quantity', 1))
+            product = Product.objects.get(id=product_id)
+            
+            item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+            if not created:
+                item.quantity += quantity
+            else:
+                item.quantity = quantity
+            item.save()
+            return JsonResponse({'status': 'success', 'message': 'Added to cart'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 def metal_rates(request):
     rates = MetalRate.objects.all()

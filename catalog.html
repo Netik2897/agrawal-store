@@ -74,10 +74,10 @@
         
         <div class="container" style="position: relative; z-index: 2;">
             <span style="text-transform: uppercase; letter-spacing: 0.6em; font-size: 0.85rem; margin-bottom: 25px; display: block; color: var(--gold-light); animation: fadeInUp 0.8s var(--ease-out);">The Art of Gold</span>
-            <h1 id="catalog-title" style="color: white; font-size: 5rem; margin-bottom: 5px; animation: fadeInUp 1s var(--ease-out);">The <span class="gold-text">Exhibition</span></h1>
+            <h1 id="catalog-title" style="color: white; animation: fadeInUp 1s var(--ease-out);">The <span class="gold-text">Exhibition</span></h1>
             <div class="divider" style="background: var(--gold-gradient); width: 80px; margin-top: 20px; animation: fadeInUp 1.2s var(--ease-out);"></div>
             
-            <p style="max-width: 800px; margin: 0 auto 50px; font-size: 1.35rem; opacity: 0.85; font-weight: 300; letter-spacing: 0.05em; animation: fadeInUp 1.4s var(--ease-out);">Discover unparalleled purity in every gold and silver piece.</p>
+            <p style="max-width: 800px; margin: 0 auto 50px; opacity: 0.85; font-weight: 300; letter-spacing: 0.05em; animation: fadeInUp 1.4s var(--ease-out);">Discover unparalleled purity in every gold and silver piece.</p>
 
             <div class="filters">
                 <a href="catalog.html" class="filter-btn active">All Pieces</a>
@@ -158,6 +158,20 @@
     <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
         <i data-lucide="arrow-up"></i>
     </button>
+
+    <!-- Professional Mobile Sticky Bar -->
+    <div class="mobile-contact-bar">
+        <a href="tel:+916262527471" class="call-btn">
+            <i data-lucide="phone"></i>
+            <span>Call Now</span>
+        </a>
+        <a href="https://wa.me/916262527471" class="whatsapp-btn">
+            <i data-lucide="message-circle"></i>
+            <span>WhatsApp</span>
+        </a>
+    </div>
+
+    <script src="{% static 'script.js' %}"></script>
 </body>
 
 </html>
