@@ -1059,11 +1059,15 @@ img {
 
     /* Override inline font sizes for hero */
     .hero-title, .hero h1, #catalog-title {
-        font-size: 2.8rem !important;
-        line-height: 1.2 !important;
+        font-size: clamp(2rem, 8vw, 2.8rem) !important;
+        line-height: 1.1 !important;
         margin-bottom: 25px !important;
         letter-spacing: -0.01em !important;
         text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        word-wrap: break-word;
+        max-width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-subtitle, .hero p, .catalog-hero p {
