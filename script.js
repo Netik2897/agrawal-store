@@ -8,6 +8,7 @@ const API_RATES_URL = '/management-portal/api/rates/';
 // Global State
 let products = [];
 let categories_list = [];
+let searchQuery = '';
 
 // Market Rates (Updated via API)
 const marketRates = {
@@ -357,13 +358,84 @@ function renderAll() {
             }
         }
 
+        if (searchQuery) {
+            displayProducts = displayProducts.filter(p => 
+                p.name.toLowerCase().includes(searchQuery) || 
+                p.category.toLowerCase().includes(searchQuery) ||
+                p.description.toLowerCase().includes(searchQuery)
+            );
+        }
+
         if (displayProducts.length > 0) {
             catalogContainer.innerHTML = displayProducts.map((p, i) => createProductCard(p, i)).join('');
         } else {
-            catalogContainer.innerHTML = '<p class="text-center" style="grid-column: 1/-1; padding: 40px; color: #888;">No pieces found in this category.</p>';
+            const noResultsMsg = searchQuery 
+                ? `No pieces found matching "${searchQuery}".`
+                : 'No pieces found in this category.';
+            catalogContainer.innerHTML = `<p class="text-center" style="grid-column: 1/-1; padding: 40px; color: #888;">${noResultsMsg}</p>`;
         }
         if (window.lucide) lucide.createIcons();
     }
+}
+
+// Search & Suggestions Logic
+function initSearch() {
+    const searchInput = document.getElementById('catalog-search');
+    const suggestionsBox = document.getElementById('search-suggestions');
+    if (!searchInput || !suggestionsBox) return;
+
+    searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+        updateSuggestions(searchQuery);
+        renderAll();
+    });
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            suggestionsBox.classList.remove('active');
+        }
+    });
+}
+
+function updateSuggestions(query) {
+    const suggestionsBox = document.getElementById('search-suggestions');
+    if (!query || query.length < 1) {
+        suggestionsBox.classList.remove('active');
+        return;
+    }
+
+    const matches = products.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.category.toLowerCase().includes(query)
+    ).slice(0, 5);
+
+    if (matches.length > 0) {
+        suggestionsBox.innerHTML = matches.map(p => `
+            <div class="suggestion-item" onclick="applySuggestion('${p.name.replace(/'/g, "\\'")}')">
+                <i data-lucide="search"></i>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 500;">${p.name}</span>
+                    <span style="font-size: 0.7rem; color: #999;">${p.category}</span>
+                </div>
+                <span class="suggestion-category"><i data-lucide="arrow-up-left" style="width: 12px; opacity: 0.5;"></i></span>
+            </div>
+        `).join('');
+        suggestionsBox.classList.add('active');
+        if (window.lucide) lucide.createIcons();
+    } else {
+        suggestionsBox.classList.remove('active');
+    }
+}
+
+function applySuggestion(name) {
+    const searchInput = document.getElementById('catalog-search');
+    if (searchInput) {
+        searchInput.value = name;
+        searchQuery = name.toLowerCase();
+        renderAll();
+    }
+    document.getElementById('search-suggestions').classList.remove('active');
 }
 
 // Side Cart Logic
@@ -503,6 +575,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
+    initSearch();
     
     // Restore Cart
     const savedCart = localStorage.getItem('prem_jewellers_cart');
