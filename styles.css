@@ -599,7 +599,7 @@ img {
 
 /* Search Bar Styles */
 .search-wrapper {
-    max-width: 550px;
+    max-width: 750px;
     margin: 45px auto 0;
     position: relative;
     z-index: 100;
@@ -614,7 +614,7 @@ img {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 60px;
-    padding: 4px 25px;
+    padding: 8px 30px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -725,6 +725,64 @@ img {
     color: var(--gold-light);
     opacity: 0.6;
     font-weight: 500;
+}
+
+/* Hero Action Buttons */
+.search-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    animation: fadeInUp 1.2s var(--ease-out) 0.8s both;
+}
+
+.hero-contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.hero-contact-btn.call {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.hero-contact-btn.whatsapp {
+    background: rgba(37, 211, 102, 0.2);
+    color: #25D366;
+    border-color: rgba(37, 211, 102, 0.4);
+}
+
+.hero-contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.hero-contact-btn.call:hover {
+    background: white;
+    color: var(--charcoal);
+}
+
+.hero-contact-btn.whatsapp:hover {
+    background: #25D366;
+    color: white;
+}
+
+@media (max-width: 480px) {
+    .search-actions {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 20px;
+    }
 }
 
 /* Products Grid */
