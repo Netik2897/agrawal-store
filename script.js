@@ -364,6 +364,15 @@ function renderAll() {
                 p.category.toLowerCase().includes(searchQuery) ||
                 p.description.toLowerCase().includes(searchQuery)
             );
+            
+            const countBadge = document.getElementById('search-count-badge');
+            if (countBadge) {
+                countBadge.textContent = `${displayProducts.length} items`;
+                countBadge.style.display = searchQuery.length > 0 ? 'inline' : 'none';
+            }
+        } else {
+            const countBadge = document.getElementById('search-count-badge');
+            if (countBadge) countBadge.style.display = 'none';
         }
 
         if (displayProducts.length > 0) {
@@ -385,9 +394,13 @@ function initSearch() {
     if (!searchInput || !suggestionsBox) return;
 
     searchInput.addEventListener('input', (e) => {
-        searchQuery = e.target.value.toLowerCase();
+        searchQuery = e.target.value.toLowerCase().trim();
         updateSuggestions(searchQuery);
         renderAll();
+    });
+
+    searchInput.addEventListener('focus', () => {
+        if (searchQuery.length > 0) updateSuggestions(searchQuery);
     });
 
     // Close suggestions when clicking outside
