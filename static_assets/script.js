@@ -38,24 +38,40 @@ const mapProductData = (backendProduct) => {
         finalPrice = finalPrice * 1.03;
     }
 
+    // Use category-specific fallback if image_url is missing or a local path
+    const categorySlug = backendProduct.category_slug || 'others';
+    let imgUrl = backendProduct.image_url || '';
+    if (!imgUrl || !imgUrl.startsWith('http')) {
+        imgUrl = CATEGORY_FALLBACKS[categorySlug] || CATEGORY_FALLBACKS['default'];
+    }
+
     return {
         id: backendProduct.id,
         name: backendProduct.name,
         description: backendProduct.description,
         category: backendProduct.category__name || 'Others',
-        category_slug: backendProduct.category_slug || 'others',
+        category_slug: categorySlug,
         price: finalPrice,
         weight: weight,
         metal_type: metalType,
         making_charges: makingCharges,
         stock: backendProduct.stock,
         available: backendProduct.available,
-        image_url: backendProduct.image_url || 'https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=1000&auto=format&fit=crop',
+        image_url: imgUrl,
         featured: backendProduct.is_featured
     };
 };
 
-// Sample products for fallback when API is down
+// Category-specific fallback jewelry images from Unsplash
+const CATEGORY_FALLBACKS = {
+    'rings': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
+    'necklaces': 'https://images.unsplash.com/photo-1515562141207-7a88fb0ce33e?q=80&w=800&auto=format&fit=crop',
+    'bangles': 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=800&auto=format&fit=crop',
+    'coins': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?q=80&w=800&auto=format&fit=crop',
+    'silver': 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=800&auto=format&fit=crop',
+    'default': 'https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=800&auto=format&fit=crop'
+};
+
 const FALLBACK_PRODUCTS = [
     {
         id: 'f1',
@@ -194,7 +210,7 @@ const createProductCard = (product, index = 0) => {
     return `
       <div class="product-card reveal-on-scroll" style="animation-delay: ${index * 0.1}s">
         <div class="product-image">
-          <img src="${product.image_url}" alt="${product.name}" loading="lazy">
+        <img src="${product.image_url}" alt="${product.name}" loading="lazy" onerror="this.onerror=null;this.src='${CATEGORY_FALLBACKS[product.category_slug] || CATEGORY_FALLBACKS.default}';">
           ${product.stock <= 5 && product.stock > 0 ? '<span class="metal-badge">Limited Edition</span>' : ''}
           ${product.stock === 0 ? '<span class="metal-badge" style="background: var(--text-muted);">Out of Stock</span>' : ''}
           <div class="image-overlay"></div>
@@ -337,10 +353,10 @@ function renderAll() {
         // Render Category Filters dynamically
         const filterContainer = document.querySelector('.filters');
         if (filterContainer && categories_list.length > 0) {
-            let filterHtml = `<a href="catalog.html" class="filter-btn ${!category ? 'active' : ''}">All Pieces</a>`;
+            let filterHtml = `<a href="/catalog.html" class="filter-btn ${!category ? 'active' : ''}">All Pieces</a>`;
             categories_list.forEach(cat => {
                 const isActive = category === cat.slug || category === cat.name;
-                filterHtml += `<a href="catalog.html?cat=${cat.slug}" class="filter-btn ${isActive ? 'active' : ''}">${cat.name}</a>`;
+                filterHtml += `<a href="/catalog.html?cat=${cat.slug}" class="filter-btn ${isActive ? 'active' : ''}">${cat.name}</a>`;
             });
             filterContainer.innerHTML = filterHtml;
         }
