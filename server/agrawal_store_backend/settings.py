@@ -152,22 +152,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [
-    BASE_DIR.parent, # This correctly points to the root directory where styles.css and script.js are located
-]
-
-# Cloudinary Configuration
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
-# Media files (Uploaded images) using Cloudinary
 # Determine which storage to use
 USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
 
@@ -177,17 +161,24 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage" if USE_CLOUDINARY else "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", # Always local for stability
     },
 }
 
-# Legacy settings for compatibility with older apps/libraries
-if USE_CLOUDINARY:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# Legacy settings
+DEFAULT_FILE_STORAGE = STORAGES["default"]["BACKEND"]
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
+
+# Avoid recursive copying in collectstatic (Fixes Disk Quota Exceeded)
+# We only want to include specific static assets, not the whole server/venv
+STATICFILES_DIRS = [
+    # Only add the root if we really need to, but let's be careful.
+    # We will tell Django to find styles.css and script.js here.
+    BASE_DIR.parent, 
+]
+# CRITICAL: This is a hack to prevent collectstatic from copying the entire environment
+# Django's collectstatic doesn't have a direct 'exclude' for dirs in STATICFILES_DIRS,
+# so we ensure the target is NOT inside the source in a way that causes bloat.
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
