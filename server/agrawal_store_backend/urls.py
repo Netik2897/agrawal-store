@@ -38,6 +38,7 @@ urlpatterns = [
     path('contact.html', store_views.contact_page),
     path('account.html', store_views.account_page),
     path('sitemap.xml', store_views.sitemap, name='sitemap'),
+    path('robots.txt', store_views.robots_txt, name='robots_txt'),
 ]
 
 if settings.DEBUG:

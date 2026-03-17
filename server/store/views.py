@@ -279,3 +279,17 @@ def sitemap(request):
     xml.append('</urlset>')
     
     return HttpResponse("\n".join(xml), content_type="application/xml")
+
+def robots_txt(request):
+    """Serve robots.txt for SEO"""
+    from django.http import HttpResponse
+    content = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "Disallow: /account/",
+        "Disallow: /management-portal/",
+        "",
+        f"Sitemap: https://premgold.pythonanywhere.com/sitemap.xml"
+    ]
+    return HttpResponse("\n".join(content), content_type="text/plain")
