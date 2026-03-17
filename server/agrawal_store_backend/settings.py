@@ -171,7 +171,17 @@ CLOUDINARY_STORAGE = {
 # Determine which storage to use
 USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
 
-# Legacy settings for compatibility with some third-party apps
+# Modern STORAGES setting (Django 4.2+)
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage" if USE_CLOUDINARY else "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+# Legacy settings for compatibility with older apps/libraries
 if USE_CLOUDINARY:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
