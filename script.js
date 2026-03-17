@@ -253,7 +253,7 @@ function showToast(message, type = 'success') {
 
 // Payment Modal Logic
 function initiatePayment(productName, amount) {
-    const upiId = "9407078261@ybl";
+    const upiId = "6262527471@ybl";
     const payeeName = "Prem Jewellers";
     const transactionNote = `Payment for ${productName}`;
     const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&tn=${encodeURIComponent(transactionNote)}&am=${amount}&cu=INR`;
