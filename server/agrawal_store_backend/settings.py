@@ -171,19 +171,13 @@ CLOUDINARY_STORAGE = {
 # Determine which storage to use
 USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
 
-# Media and Static files configuration (Django 4.2+)
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage" if USE_CLOUDINARY else "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
-
 # Legacy settings for compatibility with some third-party apps
-# Note: In Django 5.0+, these are removed and replaced by the STORAGES setting above.
-# We keep them commented out or removed to avoid AttributeError.
+if USE_CLOUDINARY:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
