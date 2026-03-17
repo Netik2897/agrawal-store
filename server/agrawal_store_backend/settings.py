@@ -149,8 +149,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# Dedicated folders for clarity and to avoid recursive collectstatic issues
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR.parent, 'collected_static')
+
+# Source files are in a dedicated assets folder
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR.parent, 'static_assets'),
+]
 
 # Determine which storage to use
 USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
@@ -161,7 +168,7 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", # Always local for stability
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", 
     },
 }
 
@@ -169,16 +176,5 @@ STORAGES = {
 DEFAULT_FILE_STORAGE = STORAGES["default"]["BACKEND"]
 STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
-# Avoid recursive copying in collectstatic (Fixes Disk Quota Exceeded)
-# We only want to include specific static assets, not the whole server/venv
-STATICFILES_DIRS = [
-    # Only add the root if we really need to, but let's be careful.
-    # We will tell Django to find styles.css and script.js here.
-    BASE_DIR.parent, 
-]
-# CRITICAL: This is a hack to prevent collectstatic from copying the entire environment
-# Django's collectstatic doesn't have a direct 'exclude' for dirs in STATICFILES_DIRS,
-# so we ensure the target is NOT inside the source in a way that causes bloat.
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'media')
