@@ -317,13 +317,16 @@ function closePaymentModal() {
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
     const menuBtn = document.querySelector('.mobile-menu-btn i');
-    
+    if (!navLinks || !menuBtn) return;
+
     navLinks.classList.toggle('active');
     
     if (navLinks.classList.contains('active')) {
         menuBtn.setAttribute('data-lucide', 'x');
+        document.body.style.overflow = 'hidden';
     } else {
         menuBtn.setAttribute('data-lucide', 'menu');
+        document.body.style.overflow = '';
     }
     if (window.lucide) lucide.createIcons();
 }
@@ -585,17 +588,7 @@ function checkout() {
     initiatePayment(names, total);
 }
 
-function toggleMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.classList.toggle('active');
-    
-    // Add overlay to body if menu is active
-    if (navLinks.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-}
+
 
 // Close menu when clicking links
 document.querySelectorAll('.nav-links a').forEach(link => {
@@ -783,20 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     checkAuthStatus();
 });
-// Mobile Menu Toggle
-function toggleMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.classList.toggle('active');
-    
-    // Animate hamburger icon
-    const menuIcon = document.querySelector('.mobile-menu-btn i');
-    if (navLinks.classList.contains('active')) {
-        menuIcon.setAttribute('data-lucide', 'x');
-    } else {
-        menuIcon.setAttribute('data-lucide', 'menu');
-    }
-    lucide.createIcons();
-}
+
 
 // Close menu when clicking links
 document.querySelectorAll('.nav-links a').forEach(link => {
