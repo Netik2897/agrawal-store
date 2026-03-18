@@ -225,12 +225,14 @@ img {
 
 /* Navbar */
 .navbar {
-    background: var(--white);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 2000;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid var(--glass-border);
     padding: 15px 0;
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
@@ -253,10 +255,15 @@ img {
     z-index: 2001;
     display: flex;
     align-items: center;
+    letter-spacing: -0.02em;
 }
 
 .logo span {
-    color: var(--gold-dark);
+    background: var(--gold-text-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
 }
 
 .nav-links {
@@ -908,20 +915,24 @@ img {
 }
 
 .social-icon {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(212, 175, 55, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--gold);
-    transition: 0.3s;
+    transition: 0.4s var(--ease-out);
+    background: transparent;
 }
 
 .social-icon:hover {
-    background: var(--gold);
-    color: var(--charcoal);
+    background: var(--gold-gradient);
+    color: var(--white);
     transform: translateY(-5px);
+    border-color: transparent;
+    box-shadow: var(--shadow-gold);
 }
 
 .copyright {
@@ -1107,9 +1118,21 @@ img {
     }
 
     .filter-btn {
-        padding: 8px 20px;
-        font-size: 0.75rem;
+        padding: 10px 24px;
+        font-size: 0.8rem;
         flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 50px;
+        transition: all 0.3s var(--ease-out);
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .filter-btn.active {
+        background: var(--gold-gradient);
+        color: var(--charcoal);
+        border-color: transparent;
+        box-shadow: var(--shadow-gold);
     }
 
     .artistic-grid {
@@ -1158,7 +1181,9 @@ img {
     }
 
     .product-price {
-        font-size: 1.15rem;
+        font-size: 1.2rem;
+        color: var(--gold-dark);
+        font-weight: 700;
     }
 
     .footer-grid {
@@ -1210,6 +1235,11 @@ img {
         font-size: 0.7rem !important;
         padding: 10px !important;
     }
+
+    /* Hide both floating buttons on mobile to keep it professional */
+    .whatsapp-float, .back-to-top-btn {
+        display: none !important;
+    }
 }
 
 /* Professional Sticky Mobile Contact Bar */
@@ -1225,10 +1255,12 @@ img {
         bottom: 0;
         left: 0;
         width: 100%;
-        background: var(--white);
-        z-index: 2100;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-        border-top: 1px solid var(--gray-medium);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 4000;
+        box-shadow: 0 -4px 25px rgba(0,0,0,0.15);
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        padding-bottom: env(safe-area-inset-bottom);
     }
     
     .mobile-contact-bar a {
@@ -1247,19 +1279,35 @@ img {
     .mobile-contact-bar .call-btn {
         background: var(--charcoal);
         color: var(--white);
+        border-right: 1px solid rgba(255,255,255,0.05);
     }
     
     .mobile-contact-bar .whatsapp-btn {
         background: #25D366;
         color: var(--white);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .mobile-contact-bar .whatsapp-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: premium-shine 3s infinite;
+    }
+
+    @keyframes premium-shine {
+        0% { left: -100%; }
+        20% { left: 100%; }
+        100% { left: 100%; }
     }
 
     .footer {
-        padding-bottom: 100px; /* Space for sticky bar */
-    }
-
-    .whatsapp-float {
-        display: none !important; /* Hide float in favor of sticky bar on mobile */
+        padding-bottom: 120px; /* More space for sticky bar */
     }
 }
 
