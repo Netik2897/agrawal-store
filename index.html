@@ -11,7 +11,7 @@
     <meta name="geo.region" content="IN-MP" />
     <meta name="geo.placename" content="Ladkui" />
     <link rel="canonical" href="https://premgold.pythonanywhere.com/" />
-    
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Prem Jewellers Ladkui | Heritage of Trust & Purity">
     <meta property="og:description" content="Explore luxury 22k & 24k gold jewelry at Prem Jewellers, Ladkui. Visit our showroom for authentic hallmark ornaments.">
@@ -64,7 +64,7 @@
     </script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
     
     {% load static %}
     <!-- Google Fonts -->
@@ -101,15 +101,15 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
+            <a href="/index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Heritage</a>
-                <a href="contact.html">Contact</a>
+                <a href="/index.html">Home</a>
+                <a href="/catalog.html">Collection</a>
+                <a href="/about.html">Our Heritage</a>
+                <a href="/contact.html">Contact</a>
             </div>
             <div class="nav-icons">
-                <a href="account.html"><i data-lucide="user"></i></a>
+                <a href="/account.html"><i data-lucide="user"></i></a>
                 <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
@@ -157,15 +157,15 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-bg" style="background-image: url('{% static 'gold_necklace.png' %}');"></div>
+        <div class="hero-bg" style="background-image: url(&quot;{% static 'gold_necklace.png' %}&quot;);"></div>
         <div class="hero-overlay" style="background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);"></div>
         <div class="hero-content">
             <span style="text-transform: uppercase; letter-spacing: 0.5em; font-size: 0.9rem; margin-bottom: 20px; display: block; color: var(--gold-light);">Established 2026</span>
             <h1 class="hero-title" style="animation: fadeInUp 1.2s var(--ease-out);"><span class="gold-text">Timeless</span> Elegance</h1>
             <p class="hero-subtitle" style="animation: fadeInUp 1.4s var(--ease-out); opacity: 0.9; font-weight: 300; letter-spacing: 0.05em;">Crafting new traditions with purity in every masterpiece of gold & silver.</p>
             <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px; animation: fadeInUp 1.6s var(--ease-out); flex-wrap: wrap;">
-                <a href="catalog.html" class="btn btn-primary premium-glow">Our Collection</a>
-                <a href="about.html" class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.5);">Our Heritage</a>
+                <a href="/catalog.html" class="btn btn-primary premium-glow">Our Collection</a>
+                <a href="/about.html" class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.5);">Our Heritage</a>
             </div>
         </div>
     </section>
@@ -221,7 +221,7 @@
             </div>
 
             <div class="text-center" style="margin-top: 80px;">
-                <a href="catalog.html" class="btn btn-primary">Full Exhibition Gallery</a>
+                <a href="/catalog.html" class="btn btn-primary">Full Exhibition Gallery</a>
             </div>
         </div>
     </section>
@@ -244,7 +244,7 @@
             </div>
 
             <div class="text-center" style="margin-top: 60px;">
-                <a href="catalog.html?cat=silver" class="btn btn-outline" style="border-color: #bdc3c7; color: #7f8c8d;">View Silver Collection</a>
+                <a href="/catalog.html?cat=silver" class="btn btn-outline" style="border-color: #bdc3c7; color: #7f8c8d;">View Silver Collection</a>
             </div>
         </div>
     </section>
@@ -295,10 +295,10 @@
                 <div>
                     <h3>Quick Links</h3>
                     <ul class="footer-link-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Heritage</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/catalog.html">Full Collection</a></li>
+                        <li><a href="/about.html">Our Heritage</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>

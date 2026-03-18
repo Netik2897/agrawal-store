@@ -10,7 +10,7 @@
     
     <meta property="og:title" content="Catalog | Prem Jewellers - Luxury Gold Jewelry">
     <meta property="og:description" content="Browse our premium 22k and 24k gold jewelry collection. Handcrafted pieces of perfection.">
-    <meta property="og:url" content="http://premgold.pythonanywhere.com/catalog.html">
+    <meta property="og:url" content="https://premgold.pythonanywhere.com/catalog.html">
     <meta property="og:image" content="https://images.unsplash.com/photo-1573408302185-9103fe58b921?q=80&w=2070&auto=format&fit=crop">
     <link rel="canonical" href="https://premgold.pythonanywhere.com/catalog.html" />
 
@@ -45,7 +45,7 @@
     }
     </script>
 
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
     {% load static %}
     <!-- Google Fonts -->
@@ -54,7 +54,7 @@
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1.8">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1.9">
     <style>
         .catalog-hero { min-height: 70vh; display: flex; align-items: center; justify-content: center; }
         .search-wrapper { max-width: 850px !important; width: 95% !important; margin: 45px auto 0 !important; }
@@ -72,15 +72,15 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
+            <a href="/index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Heritage</a>
-                <a href="contact.html">Contact</a>
+                <a href="/index.html">Home</a>
+                <a href="/catalog.html">Collection</a>
+                <a href="/about.html">Our Heritage</a>
+                <a href="/contact.html">Contact</a>
             </div>
             <div class="nav-icons">
-                <a href="account.html"><i data-lucide="user"></i></a>
+                <a href="/account.html"><i data-lucide="user"></i></a>
                 <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
@@ -104,7 +104,7 @@
 
     <section class="catalog-hero">
         <!-- Premium Background Image -->
-        <div class="hero-bg" style="background-image: url('{% static 'silver_set.png' %}');"></div>
+        <div class="hero-bg" style="background-image: url(&quot;{% static 'silver_set.png' %}&quot;);"></div>
         <!-- Sophisticated Gradient Overlay -->
         <div class="hero-overlay"></div>
         
@@ -125,10 +125,12 @@
             </div>
 
             <div class="filters">
-                <a href="catalog.html" class="filter-btn active">All Pieces</a>
-                <a href="catalog.html?cat=rings" class="filter-btn">Gold Rings</a>
-                <a href="catalog.html?cat=necklaces" class="filter-btn">Necklaces</a>
-                <a href="catalog.html?cat=coins" class="filter-btn">Gold Coins</a>
+                <a href="/catalog.html" class="filter-btn active">All Pieces</a>
+                <a href="/catalog.html?cat=rings" class="filter-btn">Rings</a>
+                <a href="/catalog.html?cat=necklaces" class="filter-btn">Necklaces</a>
+                <a href="/catalog.html?cat=coins" class="filter-btn">Coins</a>
+                <a href="/catalog.html?cat=bangles" class="filter-btn">Bangles</a>
+                <a href="/catalog.html?cat=silver" class="filter-btn">Silver</a>
             </div>
         </div>
     </section>
@@ -165,10 +167,10 @@
                 <div>
                     <h3>Quick Links</h3>
                     <ul class="footer-link-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Heritage</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/catalog.html">Full Collection</a></li>
+                        <li><a href="/about.html">Our Heritage</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>
@@ -192,7 +194,7 @@
             // Implementation handled in script.js but redefining simple toggle logic if needed
         }
     </script>
-    <script src="{% static 'script.js' %}?v=1.3"></script>
+    <script src="{% static 'script.js' %}?v=1.9"></script>
     <script>
         lucide.createIcons();
     </script>

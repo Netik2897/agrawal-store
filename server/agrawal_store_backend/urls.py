@@ -39,6 +39,7 @@ urlpatterns = [
     path('account.html', store_views.account_page),
     path('sitemap.xml', store_views.sitemap, name='sitemap'),
     path('robots.txt', store_views.robots_txt, name='robots_txt'),
+    path('favicon.ico', redirect('https://img.icons8.com/color/48/000000/jewelry.png')),
 ]
 
 if settings.DEBUG:

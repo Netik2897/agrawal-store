@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Prem Jewellers - Visit Our Shop</title>
+    <link rel="canonical" href="https://premgold.pythonanywhere.com/contact.html" />
     <meta name="description" content="Contact Prem Jewellers in Ladkui, Madhya Pradesh. Visit our gold shop, call us at +91 6262527471, or send us a message for gold and silver inquiries.">
     <meta name="keywords" content="Contact Prem Jewellers, Jewelry Shop Ladkui, Netik Agrawal Phone, Gold Shop Address Sehore">
     
     <meta property="og:title" content="Contact | Prem Jewellers - Visit Our Shop">
     <meta property="og:description" content="Get in touch with us for gold and silver inquiries. Visit our shop or send a message.">
-    <meta property="og:url" content="http://premgold.pythonanywhere.com/contact.html">
+    <meta property="og:url" content="https://premgold.pythonanywhere.com/contact.html">
 
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
     {% load static %}
     <!-- Google Fonts -->
@@ -21,7 +22,7 @@
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1.9">
 </head>
 
 <body>
@@ -29,15 +30,15 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
+            <a href="/index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Heritage</a>
-                <a href="contact.html">Contact</a>
+                <a href="/index.html">Home</a>
+                <a href="/catalog.html">Collection</a>
+                <a href="/about.html">Our Heritage</a>
+                <a href="/contact.html">Contact</a>
             </div>
             <div class="nav-icons">
-                <a href="account.html"><i data-lucide="user"></i></a>
+                <a href="/account.html"><i data-lucide="user"></i></a>
                 <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
@@ -176,10 +177,10 @@
                 <div>
                     <h3>Quick Links</h3>
                     <ul class="footer-link-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Heritage</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/catalog.html">Full Collection</a></li>
+                        <li><a href="/about.html">Our Heritage</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>
@@ -198,7 +199,7 @@
         </div>
     </footer>
 
-    <script src="{% static 'script.js' %}"></script>
+    <script src="{% static 'script.js' %}?v=1.9"></script>
     <script>
         lucide.createIcons();
 
@@ -252,6 +253,18 @@
     <button id="back-to-top" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
         <i data-lucide="arrow-up"></i>
     </button>
+
+    <!-- Professional Mobile Sticky Bar -->
+    <div class="mobile-contact-bar">
+        <a href="tel:+916262527471" class="call-btn">
+            <i data-lucide="phone"></i>
+            <span>Call Now</span>
+        </a>
+        <a href="https://wa.me/919407078261" class="whatsapp-btn">
+            <i data-lucide="message-circle"></i>
+            <span>WhatsApp</span>
+        </a>
+    </div>
 </body>
 
 </html>

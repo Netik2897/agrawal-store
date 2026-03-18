@@ -8,7 +8,8 @@
     <meta name="description" content="Manage your Prem Jewellers account. Track your gold jewelry orders and manage your profile details securely.">
     <meta name="keywords" content="Customer Dashboard, Jewelry Orders, My Account, Prem Jewellers Login">
     
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/000000/jewelry.png">
+    <link rel="canonical" href="https://premgold.pythonanywhere.com/account.html" />
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
 
     {% load static %}
     <!-- Google Fonts -->
@@ -17,7 +18,7 @@
         rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1.9">
     <style>
         .profile-card {
             background-color: white;
@@ -67,15 +68,15 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
+            <a href="/index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="catalog.html">Collection</a>
-                <a href="about.html">Our Heritage</a>
-                <a href="contact.html">Contact</a>
+                <a href="/index.html">Home</a>
+                <a href="/catalog.html">Collection</a>
+                <a href="/about.html">Our Heritage</a>
+                <a href="/contact.html">Contact</a>
             </div>
             <div class="nav-icons">
-                <a href="account.html"><i data-lucide="user"></i></a>
+                <a href="/account.html"><i data-lucide="user"></i></a>
                 <button class="cart-btn relative" onclick="toggleCart()" style="background: none; border: none; cursor: pointer; color: inherit; padding: 0;">
                     <i data-lucide="shopping-bag"></i>
                     <span id="cart-count">0</span>
@@ -188,7 +189,7 @@
                         <div style="text-align: center; padding: 60px 20px; border: 1px dashed #ddd;">
                             <i data-lucide="shopping-bag" style="width: 48px; height: 48px; color: #eee; margin-bottom: 20px;"></i>
                             <p style="color: #888; margin-bottom: 25px;">You haven't added any pieces to your personal collection yet.</p>
-                            <a href="catalog.html" class="btn btn-primary" style="padding: 12px 30px;">Explore Gallery</a>
+                            <a href="/catalog.html" class="btn btn-primary" style="padding: 12px 30px;">Explore Gallery</a>
                         </div>
 
                         <div style="margin-top: 40px;">
@@ -231,10 +232,10 @@
                 <div>
                     <h3>Quick Links</h3>
                     <ul class="footer-link-list">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="catalog.html">Full Collection</a></li>
-                        <li><a href="about.html">Our Heritage</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/catalog.html">Full Collection</a></li>
+                        <li><a href="/about.html">Our Heritage</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>
@@ -252,7 +253,7 @@
             </div>
         </div>
     </footer>
-    <script src="{% static 'script.js' %}"></script>
+    <script src="{% static 'script.js' %}?v=1.9"></script>
     <script>
         lucide.createIcons();
     </script>

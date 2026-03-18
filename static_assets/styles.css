@@ -1219,7 +1219,7 @@ img {
 
 @media (max-width: 768px) {
     .mobile-contact-bar {
-        display: grid;
+        display: grid !important;
         grid-template-columns: 1fr 1fr;
         position: fixed;
         bottom: 0;
@@ -1259,7 +1259,7 @@ img {
     }
 
     .whatsapp-float {
-        display: none; /* Hide float in favor of sticky bar on mobile */
+        display: none !important; /* Hide float in favor of sticky bar on mobile */
     }
 }
 

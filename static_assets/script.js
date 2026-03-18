@@ -41,9 +41,14 @@ const mapProductData = (backendProduct) => {
     // Use category-specific fallback if image_url is missing or a local path
     const categorySlug = backendProduct.category_slug || 'others';
     let imgUrl = backendProduct.image_url || '';
-    if (!imgUrl || !imgUrl.startsWith('http')) {
+    
+    // If image_url is missing or just "null", use fallback
+    if (!imgUrl || imgUrl === 'null' || imgUrl === '') {
         imgUrl = CATEGORY_FALLBACKS[categorySlug] || CATEGORY_FALLBACKS['default'];
     }
+    // If it's a relative path, ensure it doesn't get messed up (request handles it via building absolute URI on server, 
+    // but just in case it reaches here as relative, we let it be)
+    
 
     return {
         id: backendProduct.id,
@@ -62,14 +67,14 @@ const mapProductData = (backendProduct) => {
     };
 };
 
-// Category-specific fallback jewelry images from Unsplash
+// Category-specific fallback jewelry images from Unsplash (Verified working)
 const CATEGORY_FALLBACKS = {
-    'rings': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
-    'necklaces': 'https://images.unsplash.com/photo-1515562141207-7a88fb0ce33e?q=80&w=800&auto=format&fit=crop',
-    'bangles': 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?q=80&w=800&auto=format&fit=crop',
-    'coins': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?q=80&w=800&auto=format&fit=crop',
-    'silver': 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=800&auto=format&fit=crop',
-    'default': 'https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=800&auto=format&fit=crop'
+    'rings': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
+    'necklaces': 'https://images.unsplash.com/photo-1599643478518-17488fbbcd75?auto=format&fit=crop&q=80&w=800',
+    'bangles': 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&q=80&w=800',
+    'coins': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&q=80&w=800',
+    'silver': 'https://images.unsplash.com/photo-1558235281-c995535543ef?auto=format&fit=crop&q=80&w=800',
+    'default': 'https://images.unsplash.com/photo-1515562141207-7a88fb0ce33e?auto=format&fit=crop&q=80&w=800'
 };
 
 const FALLBACK_PRODUCTS = [

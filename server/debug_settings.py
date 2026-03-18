@@ -7,5 +7,7 @@ django.setup()
 
 try:
     print(f"STATICFILES_DIRS: {settings.STATICFILES_DIRS}")
-except AttributeError as e:
+    print(f"STATICFILES_STORAGE: {getattr(settings, 'STATICFILES_STORAGE', 'NOT FOUND')}")
+    print(f"STORAGES: {settings.STORAGES}")
+except Exception as e:
     print(f"Error: {e}")
