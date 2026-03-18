@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files efficiently
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -147,9 +149,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-# Static files (CSS, JavaScript, Images)
 # Dedicated folders for clarity and to avoid recursive collectstatic issues
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR.parent, 'collected_static')
@@ -159,8 +158,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR.parent, 'static_assets'),
 ]
 
-# Determine which storage to use
-USE_CLOUDINARY = os.environ.get('CLOUDINARY_API_KEY') is not None
+# Is Cloudinary configured?
+USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_API_KEY'))
 
 if USE_CLOUDINARY:
     CLOUDINARY_STORAGE = {
@@ -168,20 +167,15 @@ if USE_CLOUDINARY:
         'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
         'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    # STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage' # Usually not needed for local dev
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# Keep STORAGES for newer Django versions
+# WhiteNoise serves static files efficiently without a CDN on PythonAnywhere
+# Media files (product images) always go to Cloudinary if configured
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 

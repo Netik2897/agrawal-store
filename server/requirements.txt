@@ -11,3 +11,4 @@ urllib3
 pymysql
 Pillow
 python-dotenv
+whitenoise
