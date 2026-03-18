@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
+from django.views.generic.base import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -39,7 +40,7 @@ urlpatterns = [
     path('account.html', store_views.account_page),
     path('sitemap.xml', store_views.sitemap, name='sitemap'),
     path('robots.txt', store_views.robots_txt, name='robots_txt'),
-    path('favicon.ico', redirect('https://img.icons8.com/color/48/000000/jewelry.png')),
+    path('favicon.ico', RedirectView.as_view(url='https://img.icons8.com/color/48/000000/jewelry.png')),
 ]
 
 if settings.DEBUG:
