@@ -36,15 +36,15 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'premgold.pythonanywhere.com', '.pyth
 # Application definition
 
 INSTALLED_APPS = [
-    'store',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'cloudinary',
+    'store',
     'corsheaders',
 ]
 
@@ -157,16 +157,14 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# Dedicated folders for clarity and to avoid recursive collectstatic issues
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR.parent, 'collected_static')
 
-# Source files are in a dedicated assets folder
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR.parent, 'static_assets'),
 ]
 
-# Is Cloudinary configured?
+# Cloudinary Configuration
 USE_CLOUDINARY = bool(os.environ.get('CLOUDINARY_API_KEY'))
 
 if USE_CLOUDINARY:
@@ -176,24 +174,31 @@ if USE_CLOUDINARY:
         'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     }
 
-# WhiteNoise serves static files efficiently without a CDN on PythonAnywhere
-# Media files (product images) always go to Cloudinary if configured
+# Storage Configuration (Django 4.2+ & Legacy Support)
+if not DEBUG and HAS_WHITENOISE:
+    STATICFILES_STORAGE_ENGINE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+else:
+    STATICFILES_STORAGE_ENGINE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+# Define legacy settings explicitly first (important for some library versions)
+STATICFILES_STORAGE = STATICFILES_STORAGE_ENGINE
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage"
+
+# Storage Configuration 4.2+
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage" if USE_CLOUDINARY else "django.core.files.storage.FileSystemStorage",
+        "BACKEND": DEFAULT_FILE_STORAGE,
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": STATICFILES_STORAGE,
     },
 }
-
-# Legacy support for older apps like django-cloudinary-storage
-DEFAULT_FILE_STORAGE = STORAGES["default"]["BACKEND"]
-STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
 # Prevent crashes if some referenced files are missing in CSS
 WHITENOISE_MANIFEST_STRICT = False
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

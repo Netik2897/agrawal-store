@@ -28,13 +28,17 @@ def admin_dashboard(request):
     return render(request, 'store/admin/dashboard.html', context)
 
 def home(request):
-    return render(request, 'index.html')
+    rates = MetalRate.objects.all()
+    rate_data = {rate.metal_type: str(rate.rate_per_gram) for rate in rates}
+    return render(request, 'index.html', {'rates': rate_data})
 
 def catalog_page(request):
     return render(request, 'catalog.html')
 
 def about_page(request):
-    return render(request, 'about.html')
+    rates = MetalRate.objects.all()
+    rate_data = {rate.metal_type: str(rate.rate_per_gram) for rate in rates}
+    return render(request, 'about.html', {'rates': rate_data})
 
 def contact_page(request):
     return render(request, 'contact.html')
@@ -42,6 +46,9 @@ def contact_page(request):
 def account_page(request):
     return render(request, 'account.html')
 
+from django.views.decorators.cache import cache_page
+
+@cache_page(300) # Caches the output for 5 minutes
 def product_list(request):
     # Use select_related to optimize DB queries (prevents N+1 problem)
     products = Product.objects.select_related('category').all()
@@ -73,6 +80,7 @@ def product_list(request):
     
     return JsonResponse(product_data, safe=False)
 
+@cache_page(300)
 def category_list(request):
     from .models import Category
     categories = Category.objects.all()
@@ -227,6 +235,7 @@ def cart_handle(request):
 
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
+@cache_page(300)
 def metal_rates(request):
     rates = MetalRate.objects.all()
     rate_data = {rate.metal_type: str(rate.rate_per_gram) for rate in rates}
