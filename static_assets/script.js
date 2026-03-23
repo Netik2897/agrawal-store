@@ -1,5 +1,5 @@
 
-console.log("PREM JEWELLERS SCRIPT V5.5 - FINAL FIX");
+console.log("PREM JEWELLERS SCRIPT V7.0 - STABLE");
 
 // Configuration
 const API_BASE_URL = '/management-portal/api/products/';
@@ -29,7 +29,7 @@ async function fetchProducts() {
         const data = await res.json();
         products = data.length > 0 ? data.map(mapProductData) : [];
         renderAll();
-    } catch (e) { console.error("API error"); renderAll(); }
+    } catch (e) { console.error("API error", e); renderAll(); }
 }
 
 async function fetchRates() {
@@ -78,14 +78,12 @@ function renderAll() {
 }
 
 function toggleMenu() {
-    console.log("Toggle Clicked");
     const nav = document.querySelector('.nav-links');
     if (!nav) return;
     
     nav.classList.toggle('active');
     const isActive = nav.classList.contains('active');
     
-    // Icon toggle (Safe)
     const btn = document.querySelector('.mobile-menu-btn');
     if (btn) {
         btn.innerHTML = isActive ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
@@ -98,24 +96,71 @@ function toggleMenu() {
 function highlightActivePage() {
     let path = window.location.pathname.toLowerCase().replace(/\/$/, "");
     if (path === "") path = "/";
-    console.log("Applying highlight to:", path);
     
     document.querySelectorAll('.nav-links a').forEach(link => {
         let href = link.getAttribute('href').toLowerCase().replace(/\/$/, "");
         if (href === "") href = "/";
         
-        // Remove active initially
         link.classList.remove('active');
         
-        const isHompage = (path === "/" || path === "/index.html");
+        const isHomepage = (path === "/" || path === "/index.html");
         const isLinkHome = (href === "/" || href === "/index.html");
         
-        if (isHompage && isLinkHome) {
+        if (isHomepage && isLinkHome) {
             link.classList.add('active');
         } else if (href !== "/" && href !== "/index.html" && (path === href || path.includes(href))) {
             link.classList.add('active');
         }
     });
+}
+
+function showToast(message, type='success') { 
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.style.cssText = 'position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px;';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    const bg = type === 'success' ? 'var(--gold-dark, #bd9a3b)' : (type === 'info' ? '#333' : '#e53e3e');
+    toast.style.cssText = `background: ${bg}; color: white; padding: 12px 24px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: var(--font-sans, sans-serif); transform: translateY(100%); opacity: 0; transition: all 0.3s ease;`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    
+    setTimeout(() => { toast.style.transform = 'translateY(0)'; toast.style.opacity = '1'; }, 10);
+    
+    setTimeout(() => {
+        toast.style.transform = 'translateY(100%)';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+function toggleCart() { showToast('Shopping cart functionality is coming soon!', 'info'); }
+
+function toggleAuthView(viewName) {
+    const loginView = document.getElementById('login-view');
+    const registerView = document.getElementById('register-view');
+    if(loginView && registerView) {
+        if(viewName === 'login') {
+            loginView.style.display = 'block';
+            registerView.style.display = 'none';
+        } else {
+            loginView.style.display = 'none';
+            registerView.style.display = 'block';
+        }
+    } else {
+        showToast('Authentication functionality is coming soon!', 'info');
+    }
+}
+
+async function handleLogout() {
+    try {
+        await fetch('/management-portal/api/logout/', {method: 'POST'});
+        showToast('Successfully logged out.', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+    } catch(e) { console.error("Logout error", e); }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -142,84 +187,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const observe = () => document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
     observe();
     new MutationObserver(observe).observe(document.body, { childList: true, subtree: true });
-});
 
-
-function showToast(message, type=\'success\') { 
-    let container = document.getElementById(\'toast-container\');
-    if (!container) {
-        container = document.createElement(\'div\');
-        container.id = \'toast-container\';
-        container.style.cssText = \'position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px;\';
-        document.body.appendChild(container);
-    }
-    const toast = document.createElement(\'div\');
-    toast.style.cssText = ackground: ; color: white; padding: 12px 24px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: var(--font-sans, sans-serif); transform: translateY(100%); opacity: 0; transition: all 0.3s ease;;
-    toast.textContent = message;
-    container.appendChild(toast);
-    
-    setTimeout(() => { toast.style.transform = \'translateY(0)\'; toast.style.opacity = \'1\'; }, 10);
-    
-    setTimeout(() => {
-        toast.style.transform = \'translateY(100%)\';
-        toast.style.opacity = \'0\';
-        setTimeout(() => toast.remove(), 300);
-    }, 4000);
-}
-
-
-function toggleCart() { showToast(\'Shopping cart functionality is coming soon!\', \'info\'); }
-function toggleAuthView(viewName) { showToast(\'Authentication functionality is coming soon!\', \'info\'); }
-function handleLogout() { showToast(\'Logout functionality coming soon!\', \'info\'); }
-
-// AUTHENTICATION LOGIC
-function toggleAuthView(viewName) {
-    const loginView = document.getElementById('login-view');
-    const registerView = document.getElementById('register-view');
-    if(loginView && registerView) {
-        if(viewName === 'login') {
-            loginView.style.display = 'block';
-            registerView.style.display = 'none';
-        } else {
-            loginView.style.display = 'none';
-            registerView.style.display = 'block';
-        }
-    }
-}
-
-async function handleLogout() {
-    try {
-        await fetch('/management-portal/api/logout/', {method: 'POST'});
-        showToast('Successfully logged out.', 'success');
-        setTimeout(() => window.location.reload(), 1000);
-    } catch(e) {}
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
     // Auth Page Logic
     const authLoading = document.getElementById('auth-loading');
     const authForms = document.getElementById('auth-forms');
-    const profileDashboard = document.getElementById('profile-dashboard'); // If it exists
+    const profileDashboard = document.getElementById('profile-dashboard');
     
     if (authLoading) {
-        try {
-            const res = await fetch('/management-portal/api/profile/');
-            if (res.ok) {
-                // User is logged in!
-                authLoading.style.display = 'none';
-                if(profileDashboard) profileDashboard.style.display = 'block';
-                else {
-                    authLoading.parentElement.innerHTML = \<div class='text-center'><h2 class='gold-text'>Welcome back!</h2><p>You are logged into the secure portal.</p><br><button onclick='handleLogout()' class='btn btn-outline'>Sign Out</button></div>\;
+        fetch('/management-portal/api/profile/')
+            .then(res => {
+                if (res.ok) {
+                    authLoading.style.display = 'none';
+                    if(profileDashboard) profileDashboard.style.display = 'block';
+                    else {
+                        authLoading.parentElement.innerHTML = `<div class='text-center'><h2 class='gold-text'>Welcome back!</h2><p>You are logged into the secure portal.</p><br><button onclick='handleLogout()' class='btn btn-outline'>Sign Out</button></div>`;
+                    }
+                } else {
+                    authLoading.style.display = 'none';
+                    if(authForms) authForms.style.display = 'block';
                 }
-            } else {
-                // Not logged in
+            })
+            .catch(() => {
                 authLoading.style.display = 'none';
-                authForms.style.display = 'block';
-            }
-        } catch(e) {
-            authLoading.style.display = 'none';
-            authForms.style.display = 'block';
-        }
+                if(authForms) authForms.style.display = 'block';
+            });
     }
     
     const loginForm = document.getElementById('login-form');
@@ -238,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
                 const data = await res.json();
                 if(res.ok) { showToast('Login successful!'); setTimeout(() => window.location.reload(), 1000); }
-                else throw new Error(data.message);
+                else throw new Error(data.message || 'Login failed');
             } catch(error) { showToast(error.message, 'info'); btn.textContent = 'Access Collection'; }
         });
     }
@@ -260,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
                 const data = await res.json();
                 if(res.ok) { showToast('Account created!'); setTimeout(() => window.location.reload(), 1000); }
-                else throw new Error(data.message);
+                else throw new Error(data.message || 'Registration failed');
             } catch(error) { showToast(error.message, 'info'); btn.textContent = 'Begin Journey'; }
         });
     }
