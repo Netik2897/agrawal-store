@@ -171,3 +171,97 @@ function showToast(message, type=\'success\') {
 function toggleCart() { showToast(\'Shopping cart functionality is coming soon!\', \'info\'); }
 function toggleAuthView(viewName) { showToast(\'Authentication functionality is coming soon!\', \'info\'); }
 function handleLogout() { showToast(\'Logout functionality coming soon!\', \'info\'); }
+
+// AUTHENTICATION LOGIC
+function toggleAuthView(viewName) {
+    const loginView = document.getElementById('login-view');
+    const registerView = document.getElementById('register-view');
+    if(loginView && registerView) {
+        if(viewName === 'login') {
+            loginView.style.display = 'block';
+            registerView.style.display = 'none';
+        } else {
+            loginView.style.display = 'none';
+            registerView.style.display = 'block';
+        }
+    }
+}
+
+async function handleLogout() {
+    try {
+        await fetch('/management-portal/api/logout/', {method: 'POST'});
+        showToast('Successfully logged out.', 'success');
+        setTimeout(() => window.location.reload(), 1000);
+    } catch(e) {}
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Auth Page Logic
+    const authLoading = document.getElementById('auth-loading');
+    const authForms = document.getElementById('auth-forms');
+    const profileDashboard = document.getElementById('profile-dashboard'); // If it exists
+    
+    if (authLoading) {
+        try {
+            const res = await fetch('/management-portal/api/profile/');
+            if (res.ok) {
+                // User is logged in!
+                authLoading.style.display = 'none';
+                if(profileDashboard) profileDashboard.style.display = 'block';
+                else {
+                    authLoading.parentElement.innerHTML = \<div class='text-center'><h2 class='gold-text'>Welcome back!</h2><p>You are logged into the secure portal.</p><br><button onclick='handleLogout()' class='btn btn-outline'>Sign Out</button></div>\;
+                }
+            } else {
+                // Not logged in
+                authLoading.style.display = 'none';
+                authForms.style.display = 'block';
+            }
+        } catch(e) {
+            authLoading.style.display = 'none';
+            authForms.style.display = 'block';
+        }
+    }
+    
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = loginForm.querySelector('button'); btn.textContent = 'Authenticating...';
+            try {
+                const res = await fetch('/management-portal/api/login/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: document.getElementById('login-email').value,
+                        password: document.getElementById('login-password').value
+                    })
+                });
+                const data = await res.json();
+                if(res.ok) { showToast('Login successful!'); setTimeout(() => window.location.reload(), 1000); }
+                else throw new Error(data.message);
+            } catch(error) { showToast(error.message, 'info'); btn.textContent = 'Access Collection'; }
+        });
+    }
+
+    const regForm = document.getElementById('register-form');
+    if (regForm) {
+        regForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = regForm.querySelector('button'); btn.textContent = 'Registering...';
+            try {
+                const res = await fetch('/management-portal/api/register/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        name: document.getElementById('reg-name').value,
+                        email: document.getElementById('reg-email').value,
+                        password: document.getElementById('reg-password').value
+                    })
+                });
+                const data = await res.json();
+                if(res.ok) { showToast('Account created!'); setTimeout(() => window.location.reload(), 1000); }
+                else throw new Error(data.message);
+            } catch(error) { showToast(error.message, 'info'); btn.textContent = 'Begin Journey'; }
+        });
+    }
+});
