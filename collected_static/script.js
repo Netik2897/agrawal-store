@@ -143,3 +143,31 @@ document.addEventListener('DOMContentLoaded', () => {
     observe();
     new MutationObserver(observe).observe(document.body, { childList: true, subtree: true });
 });
+
+
+function showToast(message, type=\'success\') { 
+    let container = document.getElementById(\'toast-container\');
+    if (!container) {
+        container = document.createElement(\'div\');
+        container.id = \'toast-container\';
+        container.style.cssText = \'position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px;\';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement(\'div\');
+    toast.style.cssText = ackground: ; color: white; padding: 12px 24px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: var(--font-sans, sans-serif); transform: translateY(100%); opacity: 0; transition: all 0.3s ease;;
+    toast.textContent = message;
+    container.appendChild(toast);
+    
+    setTimeout(() => { toast.style.transform = \'translateY(0)\'; toast.style.opacity = \'1\'; }, 10);
+    
+    setTimeout(() => {
+        toast.style.transform = \'translateY(100%)\';
+        toast.style.opacity = \'0\';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+
+function toggleCart() { showToast(\'Shopping cart functionality is coming soon!\', \'info\'); }
+function toggleAuthView(viewName) { showToast(\'Authentication functionality is coming soon!\', \'info\'); }
+function handleLogout() { showToast(\'Logout functionality coming soon!\', \'info\'); }
