@@ -1,0 +1,4 @@
+Existing Users:
+- Username: 'Netik Goyal', Email: 'admin@example.com', Is Staff: True, Is Superuser: True
+- Username: 'netik', Email: 'netik2897@gmail.com', Is Staff: True, Is Superuser: True
+- Username: 'admin', Email: 'admin@example.com', Is Staff: True, Is Superuser: True

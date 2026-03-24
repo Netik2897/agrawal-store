@@ -173,6 +173,43 @@ def user_logout(request):
     response["Access-Control-Allow-Origin"] = "*"
     return response
 
+@csrf_exempt
+def quick_whatsapp_login(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            phone = data.get('phone', '').strip().replace('+', '')
+            name = data.get('name', '').strip()
+            
+            if not phone or len(phone) < 10:
+                return JsonResponse({'status': 'error', 'message': 'Invalid phone number'}, status=400)
+                
+            # Use phone as username if it doesn't conflict
+            user = User.objects.filter(username=phone).first()
+            if not user:
+                user = User.objects.create_user(username=phone, email=f"{phone}@wa.me", password=phone, first_name=name)
+                
+            # Create/Update profile
+            profile, created = CustomerProfile.objects.get_or_create(user=user)
+            if not profile.phone_number:
+                profile.phone_number = phone
+                profile.save()
+                
+            login(request, user)
+            
+            response = JsonResponse({
+                'status': 'success', 
+                'user': {
+                    'name': user.first_name,
+                    'phone': profile.phone_number
+                }
+            })
+            response["Access-Control-Allow-Origin"] = "*"
+            return response
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'POST only'}, status=405)
+
 def get_user_profile(request):
     if request.user.is_authenticated:
         profile = request.user.profile

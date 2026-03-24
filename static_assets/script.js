@@ -48,7 +48,7 @@ function createProductCard(p, i) {
             <div class="product-info">
                 <h3 class="product-title">${p.name}</h3>
                 <p class="product-price">${formatCurrency(p.price)}</p>
-                <button class="btn-buy" onclick="alert('Reserving ${p.name}')">Reserve Now</button>
+                <button class="btn-buy" onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})">Add to Cart</button>
             </div>
         </div>
     `;
@@ -137,7 +137,198 @@ function showToast(message, type='success') {
     }, 4000);
 }
 
-function toggleCart() { showToast('Shopping cart functionality is coming soon!', 'info'); }
+let cart = JSON.parse(localStorage.getItem('user_cart')) || [];
+let whatsappUser = JSON.parse(localStorage.getItem('whatsapp_user')) || null;
+
+function saveCart() {   
+    localStorage.setItem('user_cart', JSON.stringify(cart)); 
+    updateCartBadge(); 
+}
+
+function updateCartBadge() {
+    document.querySelectorAll('.cart-badge').forEach(badge => {
+        let count = cart.reduce((tot, item) => tot + item.quantity, 0);
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+        
+        // Also add badge class styling dynamically if needed
+        badge.style.position = 'absolute';
+        badge.style.top = '-5px';
+        badge.style.right = '-8px';
+        badge.style.background = '#e53e3e';
+        badge.style.color = 'white';
+        badge.style.fontSize = '12px';
+        badge.style.width = '18px';
+        badge.style.height = '18px';
+        badge.style.borderRadius = '50%';
+        badge.style.justifyContent = 'center';
+        badge.style.alignItems = 'center';
+    });
+}
+
+function renderCartModal() {
+    const cartItems = document.getElementById('cart-items-container');
+    const cartTotal = document.getElementById('cart-total-price');
+    if (!cartItems || !cartTotal) return;
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align:center; padding: 20px; color:#777;">Your cart is empty.</p>';
+        cartTotal.textContent = '₹0';
+        return;
+    }
+
+    let total = 0;
+    cartItems.innerHTML = cart.map((item, index) => {
+        total += item.price * item.quantity;
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding: 10px 0;">
+                <div>
+                    <h4 style="margin:0; font-size:14px; color:#333;">${item.name}</h4>
+                    <p style="margin:0; font-size:12px; color:#777;">${formatCurrency(item.price)} x ${item.quantity}</p>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button onclick="changeCartQuantity(${index}, -1)" style="padding: 2px 8px; border-radius: 4px; border: 1px solid #ccc; background: white; cursor:pointer;">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="changeCartQuantity(${index}, 1)" style="padding: 2px 8px; border-radius: 4px; border: 1px solid #ccc; background: white; cursor:pointer;">+</button>
+                    <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; padding:5px; margin-left:10px; cursor:pointer;"><i data-lucide="trash-2" style="width:16px; height:16px;"></i>🗑️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    cartTotal.textContent = formatCurrency(total);
+}
+
+function changeCartQuantity(index, delta) {
+    if(cart[index].quantity + delta > 0) {
+        cart[index].quantity += delta;
+    } else {
+        cart.splice(index, 1);
+    }
+    saveCart();
+    renderCartModal();
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+    renderCartModal();
+}
+
+function toggleCart() { 
+    const modal = document.getElementById('cart-modal');
+    if (!modal) {
+        showToast('Cart UI not added to this page yet!', 'info');
+        return;
+    }
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+    } else {
+        renderCartModal();
+        modal.style.display = 'flex';
+    }
+}
+
+// Global for holding item until user logs in
+let pendingCartItem = null;
+
+function addToCart(productId, name, price) {
+    if (!whatsappUser) {
+        pendingCartItem = { id: productId, name: name, price: price };
+        const modal = document.getElementById('whatsapp-login-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        } else {
+            showToast('Login UI missing!', 'error');
+        }
+        return;
+    }
+    
+    // Add logic
+    const existing = cart.find(i => i.id === productId);
+    if (existing) existing.quantity += 1;
+    else cart.push({ id: productId, name: name, price: price, quantity: 1 });
+    
+    saveCart();
+    showToast(name + ' added to cart!', 'success');
+}
+
+async function handleWhatsAppLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('quick-login-btn');
+    const name = document.getElementById('quick-name').value;
+    const phone = document.getElementById('quick-phone').value;
+    
+    if (phone.length < 10) {
+        showToast("Please enter a valid 10-digit number", "error");
+        return;
+    }
+
+    const originalText = btn.textContent;
+    btn.textContent = 'Verifying...';
+    try {
+        const res = await fetch('/management-portal/api/quick-login/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, phone: phone })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            whatsappUser = data.user;
+            localStorage.setItem('whatsapp_user', JSON.stringify(whatsappUser));
+            document.getElementById('whatsapp-login-modal').style.display = 'none';
+            showToast('Verified! Welcome ' + data.user.name, 'success');
+            
+            if (pendingCartItem) {
+                addToCart(pendingCartItem.id, pendingCartItem.name, pendingCartItem.price);
+                pendingCartItem = null;
+            }
+        } else {
+            showToast(data.message || "Failed to verified", 'error');
+        }
+    } catch (e) {
+        showToast('Connection error. Please try again.', 'error');
+    }
+    btn.textContent = originalText;
+}
+
+function closeWhatsAppModal() {
+    document.getElementById('whatsapp-login-modal').style.display = 'none';
+    pendingCartItem = null;
+}
+
+function checkoutCart() {
+    if (cart.length === 0) {
+        showToast("Your cart is empty!", "info");
+        return;
+    }
+    if (!whatsappUser) {
+        toggleCart(); // Close cart
+        document.getElementById('whatsapp-login-modal').style.display = 'flex';
+        return;
+    }
+    
+    let text = `*New Order Request*\n\n`;
+    let total = 0;
+    cart.forEach(item => {
+        text += `- ${item.name} (Qty: ${item.quantity}) = ₹${item.price * item.quantity}\n`;
+        total += item.price * item.quantity;
+    });
+    text += `\n*Total Estimated Amount: ₹${total}*\n\n`;
+    text += `Customer Name: ${whatsappUser.name}\n`;
+    text += `Customer Mobile: ${whatsappUser.phone}`;
+    
+    const storeNumber = "919407078261"; // Admin's WhatsApp
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/${storeNumber}?text=${encodedText}`, '_blank');
+    
+    // Clear cart after sending to whatsapp
+    cart = [];
+    saveCart();
+    toggleCart();
+    showToast("Opening WhatsApp to complete order!", "success");
+}
 
 function toggleAuthView(viewName) {
     const loginView = document.getElementById('login-view');
