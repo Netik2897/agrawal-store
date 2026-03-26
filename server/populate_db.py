@@ -6,60 +6,60 @@ django.setup()
 
 from store.models import Product, Category, MetalRate
 
-# Clear existing to ensure clean state with correct images
+# Clear existing to ensure clean state
 Product.objects.all().delete()
 Category.objects.all().delete()
 
 # 1. Create Categories
 cats = {}
-for name, slug in [('Rings', 'rings'), ('Necklaces', 'necklaces'), ('Coins', 'coins'), ('Bangles', 'bangles'), ('Silver', 'silver')]:
+for name, slug in [('Shirts', 'shirts'), ('T-Shirts', 'tshirts'), ('Jeans', 'jeans'), ('Ethnic', 'ethnic'), ('Winter', 'winter')]:
     cats[slug], _ = Category.objects.get_or_create(name=name, slug=slug)
 
-# 2. Update Metal Rates
-rates = [('GOLD_24K', 7350.00), ('GOLD_22K', 6850.00), ('SILVER', 92.00)]
+# 2. Keep Metal Rates as placeholders so old backend code doesn't crash
+rates = [('GOLD_24K', 1.00), ('GOLD_22K', 1.00), ('SILVER', 1.00)]
 for m_type, rate in rates:
     MetalRate.objects.update_or_create(metal_type=m_type, defaults={'rate_per_gram': rate})
 
-# 3. Create Products with Images
+# 3. Create Products for Agrawal Clothing
 products_data = [
     {
-        'name': "Traditional Gold Ring",
-        'cat': cats['rings'],
-        'slug': 'traditional-gold-ring',
-        'desc': "A beautiful 22k gold ring with intricate floral patterns.",
-        'weight': 5.5,
-        'metal': 'GOLD_22K',
-        'img': 'products/gold_necklace.png', # Using necklace for now as quality gold sample
+        'name': "Premium Casual Shirt",
+        'cat': cats['shirts'],
+        'slug': 'premium-casual-shirt',
+        'desc': "100% fine cotton casual shirt for everyday premium feel.",
+        'weight': 1499, # Setting weight as price so calculated price works out
+        'metal': 'GOLD_24K',
+        'img': 'https://images.unsplash.com/photo-1596755094514-f87e32f85e23?q=80&w=2000&auto=format&fit=crop',
         'featured': True
     },
     {
-        'name': "Royal Bridal Necklace",
-        'cat': cats['necklaces'],
-        'slug': 'royal-bridal-necklace',
-        'desc': "Grand 22k gold necklace set for your special day.",
-        'weight': 45.0,
+        'name': "Designer Black T-Shirt",
+        'cat': cats['tshirts'],
+        'slug': 'designer-black-tshirt',
+        'desc': "Comfortable and stylish modern minimalist t-shirt.",
+        'weight': 999,
         'metal': 'GOLD_22K',
-        'img': 'products/gold_necklace.png',
+        'img': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=2000&auto=format&fit=crop',
         'featured': True
     },
     {
-        'name': "Artisan Gold Bangles",
-        'cat': cats['bangles'],
-        'slug': 'artisan-gold-bangles',
-        'desc': "Set of traditional 22k gold bangles with unique textures.",
-        'weight': 24.0,
-        'metal': 'GOLD_22K',
-        'img': 'products/gold_bangles.png',
+        'name': "Signature Blue Jeans",
+        'cat': cats['jeans'],
+        'slug': 'signature-blue-jeans',
+        'desc': "Stretchable ultra-comfort denim jeans.",
+        'weight': 1999,
+        'metal': 'GOLD_24K',
+        'img': 'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?q=80&w=2000&auto=format&fit=crop',
         'featured': True
     },
     {
-        'name': "Handcrafted Silver Set",
-        'cat': cats['silver'],
-        'slug': 'silver-ornaments-set',
-        'desc': "Premium silver anklets and decorative coins.",
-        'weight': 120.0,
+        'name': "Royal Kurta Ethnic Set",
+        'cat': cats['ethnic'],
+        'slug': 'royal-kurta-set',
+        'desc': "Perfect for festive occasions with intricate tailoring.",
+        'weight': 2999,
         'metal': 'SILVER',
-        'img': 'products/silver_set.png',
+        'img': 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop',
         'featured': True
     }
 ]
@@ -70,13 +70,13 @@ for p in products_data:
         category=p['cat'],
         slug=p['slug'],
         description=p['desc'],
-        price=0,
-        weight=p['weight'],
+        price=p['weight'], # Use explicit price
+        weight=1, 
         metal_type=p['metal'],
-        making_charges=2000,
+        making_charges=0,
         image=p['img'],
-        stock=10,
+        stock=50,
         is_featured=p['featured']
     )
 
-print("Database successfully populated with images.")
+print("Clothing Database successfully populated!")

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collection | Prem Jewellers - Gold & Silver</title>
-    <meta name="description" content="Browse our fine 22k and 24k gold and silver collection. Rings, necklaces, and coins handcrafted with purity and trust in Ladkui.">
-    <meta name="keywords" content="Gold Collection, Silver Jewelry, Prem Jewellers, Gold Rings, 24k Gold Coins, Ladkui Gold">
+    <title>Collection | Agrawal Clothing - Apparel & Accessories</title>
+    <meta name="description" content="Browse our fine 22k and 24k clothing and accessories collection. Shirts, necklaces, and coins handcrafted with purity and trust in Ladkui.">
+    <meta name="keywords" content="Gold Collection, Winter Jewelry, Agrawal Clothing, Gold Shirts, 24k Gold Jeans, Ladkui Gold">
     
-    <meta property="og:title" content="Catalog | Prem Jewellers - Luxury Gold Jewelry">
-    <meta property="og:description" content="Browse our premium 22k and 24k gold jewelry collection. Handcrafted pieces of perfection.">
+    <meta property="og:title" content="Catalog | Agrawal Clothing - Luxury Gold Jewelry">
+    <meta property="og:description" content="Browse our premium 22k and 24k gold clothing collection. Handcrafted pieces of perfection.">
     <meta property="og:url" content="https://premgold.pythonanywhere.com/catalog.html">
     <meta property="og:image" content="https://images.unsplash.com/photo-1573408302185-9103fe58b921?q=80&w=2070&auto=format&fit=crop">
     <link rel="canonical" href="https://premgold.pythonanywhere.com/catalog.html" />
@@ -19,8 +19,8 @@
     {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": "Gold & Silver Collection | Prem Jewellers",
-      "description": "Handcrafted 22k and 24k gold jewelry including rings, necklaces, and coins.",
+      "name": "Apparel & Accessories Collection | Agrawal Clothing",
+      "description": "Handcrafted 22k and 24k gold clothing including rings, necklaces, and coins.",
       "url": "https://premgold.pythonanywhere.com/catalog.html",
       "mainEntity": {
         "@type": "ItemList",
@@ -28,17 +28,17 @@
           {
             "@type": "ListItem",
             "position": 1,
-            "name": "Gold Rings"
+            "name": "Gold Shirts"
           },
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Gold Necklaces"
+            "name": "Gold T-Shirts"
           },
           {
             "@type": "ListItem",
             "position": 3,
-            "name": "Silver Coins"
+            "name": "Winter Jeans"
           }
         ]
       }
@@ -57,7 +57,7 @@
       gtag('config', 'G-XXXXXXXXXX');
     </script> -->
 
-    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/jewelry.png">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/clothing.png">
 
     {% load static %}
     <!-- Google Fonts -->
@@ -84,7 +84,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="/index.html" class="logo">Prem<span class="gold-text">Jewellers</span></a>
+            <a href="/index.html" class="logo">Agrawal<span class="gold-text">Clothing</span></a>
             <div class="nav-links">
                 <a href="/index.html">Home</a>
                 <a href="/catalog.html">Collection</a>
@@ -107,16 +107,16 @@
     <!-- Top Info Bar / Live Gold Rates -->
     <div class="gold-rate-bar">
         <div class="container gold-rate-container">
-            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 24k Gold: <span style="color: var(--gold-light);">₹7,350/g</span></span>
-            <span><i data-lucide="gem" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> 22k Gold: <span style="color: var(--gold-light);">₹6,850/g</span></span>
-            <span><i data-lucide="sparkles" style="width: 12px; vertical-align: middle; margin-right: 8px; color: #e5e4e2;"></i> Silver: <span style="color: #e5e4e2;">₹92/g</span></span>
-            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Updated Today</span>
+            <span><i data-lucide="shirt" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> Suits: <span style="color: var(--gold-light);">₹4,999</span></span>
+            <span><i data-lucide="shirt" style="width: 12px; vertical-align: middle; margin-right: 8px; color: var(--gold);"></i> Shirts: <span style="color: var(--gold-light);">₹1,499</span></span>
+            <span><i data-lucide="sparkles" style="width: 12px; vertical-align: middle; margin-right: 8px; color: #e5e4e2;"></i> Jeans: <span style="color: #e5e4e2;">₹1,299</span></span>
+            <span style="opacity: 0.6; font-weight: 300; display: flex; align-items: center;"><i data-lucide="clock" style="width: 12px; margin-right: 8px;"></i> Fresh Stock</span>
         </div>
     </div>
 
     <section class="catalog-hero">
-        <!-- Premium Background Image -->
-        <div class="hero-bg" style="background-image: url(&quot;{% static 'silver_set.png' %}&quot;);"></div>
+        <!-- Agrawalium Background Image -->
+        <div class="hero-bg" style="background-image: url(&quot;https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop&quot;);"></div>
         <!-- Sophisticated Gradient Overlay -->
         <div class="hero-overlay"></div>
         
@@ -125,12 +125,12 @@
             <h1 id="catalog-title" style="color: white; animation: fadeInUp 1s var(--ease-out);">The <span class="gold-text">Exhibition</span></h1>
             <div class="divider" style="background: var(--gold-gradient); width: 80px; margin-top: 20px; animation: fadeInUp 1.2s var(--ease-out);"></div>
             
-            <p class="catalog-subtitle" style="animation: fadeInUp 1.4s var(--ease-out);">Discover unparalleled purity in every gold and silver piece.</p>
+            <p class="catalog-subtitle" style="animation: fadeInUp 1.4s var(--ease-out);">Discover unparalleled purity in every clothing and accessories piece.</p>
 
             <div class="search-wrapper" style="max-width: 850px; width: 100%;">
                 <div class="search-bar-container">
                     <i data-lucide="search" class="search-icon"></i>
-                    <input type="text" id="catalog-search" class="search-input" placeholder="Search for rings, necklaces, or coins..." autocomplete="off">
+                    <input type="text" id="catalog-search" class="search-input" placeholder="Search for shirts, jeans, or kurtas..." autocomplete="off">
                     <span id="search-count-badge" style="display: none;"></span>
                 </div>
                 <div id="search-suggestions" class="suggestions-dropdown"></div>
@@ -138,11 +138,11 @@
 
             <div class="filters">
                 <a href="/catalog.html" class="filter-btn active">All Pieces</a>
-                <a href="/catalog.html?cat=rings" class="filter-btn">Rings</a>
-                <a href="/catalog.html?cat=necklaces" class="filter-btn">Necklaces</a>
-                <a href="/catalog.html?cat=coins" class="filter-btn">Coins</a>
-                <a href="/catalog.html?cat=bangles" class="filter-btn">Bangles</a>
-                <a href="/catalog.html?cat=silver" class="filter-btn">Silver</a>
+                <a href="/catalog.html?cat=rings" class="filter-btn">Shirts</a>
+                <a href="/catalog.html?cat=necklaces" class="filter-btn">T-Shirts</a>
+                <a href="/catalog.html?cat=coins" class="filter-btn">Jeans</a>
+                <a href="/catalog.html?cat=bangles" class="filter-btn">Ethnic</a>
+                <a href="/catalog.html?cat=silver" class="filter-btn">Winter</a>
             </div>
         </div>
     </section>
@@ -154,7 +154,7 @@
                 <!-- Products via JS -->
                 <div class="text-center w-full" style="grid-column: 1/-1; padding: 100px 0;">
                     <i data-lucide="loader-2" class="animate-spin" style="width: 48px; height: 48px; color: var(--gold); margin: 0 auto 20px;"></i>
-                    <p style="font-size: 1.2rem; color: var(--text-muted);">Curating our latest collection from the database...</p>
+                    <p style="font-size: 1.2rem; color: var(--text-muted);">Loading the latest season's catalog...</p>
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h3>Prem Jewellers</h3>
+                    <h3>Agrawal Clothing</h3>
                     <p style="color: #999; font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
                         <strong>Owner: Netik Agrawal</strong><br>
                         Bada bajar durga mandir ladkui<br>
@@ -196,7 +196,7 @@
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2026 Prem Jewellers. Crafted with Purity and Trust.
+                &copy; 2026 Agrawal Clothing. Crafted with Purity and Trust.
             </div>
         </div>
     </footer>
