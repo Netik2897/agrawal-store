@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /account.html
 
-# Sitemap
 Sitemap: https://premgold.pythonanywhere.com/sitemap.xml
