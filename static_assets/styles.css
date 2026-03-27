@@ -2,10 +2,10 @@
     /* Refined Premium Palette */
     --charcoal: #121212;
     --charcoal-light: #1e1e1e;
-    --gold: #C19A6B;
-    --gold-light: #D4B895;
-    --gold-dark: #8B693A;
-    --gold-extra-light: #F5F0EA;
+    --gold: #d4af37;
+    --gold-light: #f1c40f;
+    --gold-dark: #9a7b2c;
+    --gold-extra-light: #fdf5e6;
     --gold-gradient: linear-gradient(135deg, #d4af37, #f1c40f, #9a7b2c);
     --gold-text-gradient: linear-gradient(135deg, #d4af37 0%, #f1c40f 50%, #d4af37 100%);
 
